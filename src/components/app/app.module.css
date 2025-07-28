@@ -1,0 +1,15 @@
+.app {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: transparent;
+  background-image: radial-gradient(
+    var(--color-neutral-200) 0.7px,
+    transparent 0.7px
+  );
+  background-size: 30px 30px;
+}
