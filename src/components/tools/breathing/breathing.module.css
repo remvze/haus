@@ -1,0 +1,201 @@
+.wrapper {
+  padding: 12px;
+}
+
+.exercise {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 85px 0;
+  background-color: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+
+  & .timer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 4px 12px;
+    font-family: var(--font-mono);
+    font-size: var(--font-2xsm);
+    color: var(--color-foreground-subtle);
+    border: 1px solid var(--color-neutral-200);
+    border-top: none;
+    border-left: none;
+  }
+
+  & .progressbar {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 80px;
+    height: 2px;
+    overflow: hidden;
+    background-color: var(--color-neutral-100);
+    transform: translateX(-50%);
+
+    & .progress {
+      height: 100%;
+      background-color: var(--color-neutral-950);
+      transition: 1s;
+      transition-timing-function: linear;
+    }
+  }
+
+  & .audio {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: var(--color-foreground-subtle);
+    cursor: pointer;
+    background-color: var(--color-neutral-100);
+    border: 1px solid var(--color-neutral-200);
+    outline: none;
+    transition: 0.2s;
+
+    &:hover {
+      color: var(--color-foreground);
+      background-color: var(--color-neutral-200);
+    }
+  }
+
+  & .phase {
+    font-weight: 500;
+  }
+
+  & .circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    height: 40%;
+    aspect-ratio: 1 / 1;
+    background-image: radial-gradient(
+      var(--color-neutral-50),
+      var(--color-neutral-50),
+      var(--color-neutral-100)
+    );
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.selectWrapper {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+  width: 80%;
+  height: 45px;
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+  transform: translate(-50%, 50%);
+
+  & .selectBox {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0 16px;
+    font-size: var(--font-sm);
+    color: var(--color-foreground);
+    background-color: var(--color-neutral-50);
+    border: none;
+    outline: none;
+
+    & option {
+      color: var(--color-neutral-50);
+    }
+
+    &:disabled {
+      opacity: 0.2;
+    }
+  }
+
+  & .controlButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    color: var(--color-neutral-50);
+    cursor: pointer;
+    background-color: var(--color-neutral-950);
+    border: none;
+    border-radius: 0;
+    outline: none;
+    transition: 0.2s;
+
+    &:hover {
+      color: var(--color-foreground);
+      background-color: var(--color-neutral-200);
+    }
+  }
+}
+
+.desc {
+  position: relative;
+  top: -10px;
+  padding: 50px 20px 20px;
+  font-size: var(--font-sm);
+  line-height: 1.6;
+  color: var(--color-foreground-subtle);
+  border: 1px dashed var(--color-neutral-200);
+  border-top: none;
+
+  & span {
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+}
+
+.customForm {
+  position: relative;
+  top: -10px;
+  padding: 50px 20px 20px;
+  border: 1px dashed var(--color-neutral-200);
+  border-top: none;
+
+  & h3 {
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  & label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+
+  & input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 45px;
+    padding: 0 12px;
+    font-size: var(--font-sm);
+    color: var(--color-foreground);
+    background-color: var(--color-neutral-50);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 0;
+    outline: none;
+
+    &:disabled {
+      opacity: 0.2;
+    }
+  }
+
+  & .field:not(:last-of-type) {
+    margin-bottom: 16px;
+  }
+}

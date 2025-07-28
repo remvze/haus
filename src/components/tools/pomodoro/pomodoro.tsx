@@ -115,6 +115,7 @@ export function Pomodoro({ isOpen, onClose }: PomodoroProps) {
   return (
     <>
       <Window
+        contained
         isOpen={isOpen}
         title="Pomodoro Timer"
         windowName="pomodoro"

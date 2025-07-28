@@ -13,6 +13,7 @@ import { usePrevious } from '@/hooks/use-previous';
 
 interface WindowProps {
   children: React.ReactNode;
+  contained?: boolean;
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -21,6 +22,7 @@ interface WindowProps {
 
 export function Window({
   children,
+  contained = false,
   isOpen,
   onClose,
   title,
@@ -120,7 +122,9 @@ export function Window({
           </button>
         </div>
       </header>
-      <div className={styles.content}>{children}</div>
+      <div className={cn(styles.content, contained && styles.contained)}>
+        {children}
+      </div>
     </Rnd>
   );
 }

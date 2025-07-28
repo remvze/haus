@@ -71,6 +71,7 @@ export function Countdown({ isOpen, onClose }: CountdownProps) {
 
   return (
     <Window
+      contained
       isOpen={isOpen}
       title="Countdown Timer"
       windowName="countdown"

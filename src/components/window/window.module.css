@@ -2,6 +2,14 @@
   display: flex !important;
   flex-direction: column;
   background-color: var(--color-neutral-50);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-neutral-100) 0,
+    var(--color-neutral-100) 1px,
+    var(--color-neutral-50) 0,
+    var(--color-neutral-50) 50%
+  );
+  background-size: 10px 10px;
   border: 1px solid var(--color-neutral-300);
 
   & .header {
@@ -11,6 +19,7 @@
     height: 40px;
     min-height: 40px;
     cursor: move;
+    background-color: var(--color-neutral-50);
     border-bottom: 1px solid var(--color-neutral-300);
 
     & h3 {
@@ -52,5 +61,15 @@
   & .content {
     flex-grow: 1;
     overflow: auto;
+    background-color: var(--color-neutral-50);
+
+    &.contained {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      border: 1px solid var(--color-neutral-100);
+      border-top: none;
+      border-bottom: none;
+    }
   }
 }

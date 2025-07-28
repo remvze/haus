@@ -8,6 +8,7 @@ import styles from './app.module.css';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Countdown } from '../tools/countdown';
 import { Pomodoro } from '../tools/pomodoro';
+import { Breathing } from '../tools/breathing';
 
 export function App() {
   const [openApps, setOpenApps] = useLocalStorage<Array<string>>(
@@ -50,6 +51,11 @@ export function App() {
           <Pomodoro
             isOpen={isAppOpen('pomodoro')}
             onClose={() => closeApp('pomodoro')}
+          />
+
+          <Breathing
+            isOpen={isAppOpen('breathing')}
+            onClose={() => closeApp('breathing')}
           />
         </div>
       </WindowsProvider>

@@ -12,6 +12,7 @@ interface TodoProps {
 export function Todo({ isOpen, onClose }: TodoProps) {
   return (
     <Window
+      contained
       isOpen={isOpen}
       title="To-do Checklist"
       windowName="todo"
