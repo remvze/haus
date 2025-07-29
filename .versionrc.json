@@ -10,32 +10,32 @@
     },
     {
       "type": "chore",
-      "hidden": false,
+      "hidden": true,
       "section": "🚚 Chores"
     },
     {
       "type": "docs",
-      "hidden": false,
+      "hidden": true,
       "section": "📝 Documentation"
     },
     {
       "type": "style",
-      "hidden": false,
+      "hidden": true,
       "section": "💄 Styling"
     },
     {
       "type": "refactor",
-      "hidden": false,
+      "hidden": true,
       "section": "♻️ Code Refactoring"
     },
     {
       "type": "perf",
-      "hidden": false,
+      "hidden": true,
       "section": "⚡️ Performance Improvements"
     },
     {
       "type": "test",
-      "hidden": false,
+      "hidden": true,
       "section": "✅ Testing"
     }
   ]
