@@ -8,12 +8,11 @@ interface Props {
 }
 
 const title = Astro.props.title
-  ? `${Astro.props.title} — Minimum`
-  : 'Minimum: Minimal Websites Directory';
+  ? `${Astro.props.title} — Haus`
+  : 'Haus: A Dead-Simple Online Workstation';
 
 const description =
-  Astro.props.description ||
-  'A carefully curated collection of minimal websites.';
+  Astro.props.description || 'A dead-simple online workstation.';
 
 const og = Astro.props.og || '/og.png';
 ---
@@ -33,10 +32,10 @@ const og = Astro.props.og || '/og.png';
 
     <meta content={title} property="og:title" />
     <meta content={description} property="og:description" />
-    <meta content="Minimum" property="og:site_name" />
-    <meta content="https://mnmm.xyz/" property="og:url" />
+    <meta content="Haus" property="og:site_name" />
+    <meta content="https://haus.mvze.net/" property="og:url" />
     <meta content="website" property="og:type" />
-    <meta content={`https://mnmm.xyz${og}`} property="og:image" />
+    <meta content={`https://haus.mvze.net${og}`} property="og:image" />
 
     <link href="/sitemap-index.xml" rel="sitemap" />
   </head>

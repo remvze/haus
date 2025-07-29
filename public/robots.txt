@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://mnmm.xyz/sitemap-index.xml
+Sitemap: https://haus.mvze.net/sitemap-index.xml
