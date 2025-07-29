@@ -17,7 +17,7 @@ const apps: Record<string, string> = {
 };
 
 export function Toolbox({ openApp, openApps }: ToolboxProps) {
-  const [selected, setSelected] = useState('notepad');
+  const [selected, setSelected] = useState(Object.keys(apps)[0]);
 
   const notOpenApps = useMemo(
     () => Object.keys(apps).filter(app => !openApps.includes(app)),
