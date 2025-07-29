@@ -1,0 +1,233 @@
+.wrapper {
+  padding: 12px;
+}
+
+.range {
+  width: 100%;
+  margin-top: 10px;
+
+  /********** Range Input Styles **********/
+
+  /* Range Reset */
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
+
+  /* Removes default focus */
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  /***** Chrome, Safari, Opera and Edge Chromium styles *****/
+
+  &::-webkit-slider-runnable-track {
+    height: 0.5rem;
+    background-color: #27272a;
+    border-radius: 0.5rem;
+  }
+
+  &::-webkit-slider-thumb {
+    width: 14px;
+    height: 14px;
+    margin-top: -3px;
+    appearance: none;
+    background-color: #3f3f46;
+    border: 1px solid #52525b;
+    border-radius: 50%;
+  }
+
+  &:not(:disabled):focus::-webkit-slider-thumb {
+    border: 1px solid #053a5f;
+    outline: 3px solid #053a5f;
+    outline-offset: 0.125rem;
+  }
+
+  /******** Firefox styles ********/
+
+  &::-moz-range-track {
+    height: 0.5rem;
+    background-color: #27272a;
+    border-radius: 0.5rem;
+  }
+
+  &::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    margin-top: -3px;
+    background-color: #3f3f46;
+    border: none;
+    border: 1px solid #52525b;
+    border-radius: 0;
+    border-radius: 50%;
+  }
+
+  &:not(:disabled):focus::-moz-range-thumb {
+    border: 1px solid #053a5f;
+    outline: 3px solid #053a5f;
+    outline-offset: 0.125rem;
+  }
+}
+
+.sound {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 20px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 0;
+  transition: 0.2s;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-neutral-400);
+    outline-offset: 2px;
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  & .icon {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: var(--font-base);
+    color: var(--color-foreground-subtler);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 50%;
+    transition: 0.2s;
+
+    & span {
+      line-height: 0;
+    }
+
+    & .spinner {
+      line-height: 0;
+      animation-name: spinner;
+      animation-duration: 1s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+  }
+
+  &:hover .icon,
+  &:focus-visible .icon {
+    color: var(--color-foreground-subtle);
+  }
+
+  &.selected {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px var(--color-neutral-800);
+
+    & .icon {
+      color: var(--color-foreground);
+    }
+  }
+
+  & .label {
+    margin-top: 12px;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    line-height: 1.6;
+    cursor: default;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sounds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  justify-content: start;
+  margin-top: 16px;
+}
+
+.categories {
+  & .category {
+    &:not(:last-of-type) {
+      margin-bottom: 32px;
+    }
+
+    & .categoryTitle {
+      font-weight: 500;
+    }
+  }
+}
+
+.controls {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  margin-bottom: 20px;
+  background-color: var(--color-neutral-50);
+  border-bottom: 1px solid var(--color-neutral-200);
+
+  & .items {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    & button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      aspect-ratio: 1/1;
+      font-size: var(--font-lg);
+      color: var(--color-foreground);
+      cursor: pointer;
+      background: var(--color-neutral-50);
+      border: none;
+      border-right: 1px solid var(--color-neutral-200);
+      border-radius: 0;
+      transition: 0.2s;
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.4;
+      }
+
+      &.trash {
+        font-size: var(--font-md);
+      }
+    }
+  }
+
+  & .globalVolume {
+    flex-grow: 1;
+    padding: 0 12px;
+
+    & input {
+      display: block;
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}

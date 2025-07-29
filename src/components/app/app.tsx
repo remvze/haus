@@ -9,6 +9,7 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Countdown } from '../tools/countdown';
 import { Pomodoro } from '../tools/pomodoro';
 import { Breathing } from '../tools/breathing';
+import { Ambient } from '../tools/ambient/ambient';
 
 export function App() {
   const [openApps, setOpenApps] = useLocalStorage<Array<string>>(
@@ -56,6 +57,11 @@ export function App() {
           <Breathing
             isOpen={isAppOpen('breathing')}
             onClose={() => closeApp('breathing')}
+          />
+
+          <Ambient
+            isOpen={isAppOpen('ambient')}
+            onClose={() => closeApp('ambient')}
           />
         </div>
       </WindowsProvider>

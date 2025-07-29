@@ -45,6 +45,7 @@
     "sort-destructure-keys/sort-destructure-keys": "warn",
     "@typescript-eslint/triple-slash-reference": "off",
     "jsx-a11y/no-static-element-interactions": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "react/jsx-sort-props": [
       "warn",
       {

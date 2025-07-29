@@ -15,6 +15,20 @@ interface PomodoroProps {
 }
 
 export function Pomodoro({ isOpen, onClose }: PomodoroProps) {
+  return (
+    <Window
+      contained
+      isOpen={isOpen}
+      title="Pomodoro Timer"
+      windowName="pomodoro"
+      onClose={onClose}
+    >
+      <PomodoroContent />
+    </Window>
+  );
+}
+
+export function PomodoroContent() {
   const alarm = useSoundEffect('/sounds/alarm.mp3');
 
   const [selectedTab, setSelectedTab] = useState('pomodoro');
@@ -114,39 +128,27 @@ export function Pomodoro({ isOpen, onClose }: PomodoroProps) {
 
   return (
     <>
-      <Window
-        contained
-        isOpen={isOpen}
-        title="Pomodoro Timer"
-        windowName="pomodoro"
-        onClose={onClose}
-      >
-        <div className={styles.wrapper}>
-          <Tabs
-            selectedTab={selectedTab}
-            tabs={tabs}
-            onSelect={setSelectedTab}
-          />
-          <Timer completed={completions[selectedTab] || 0} timer={timer} />
+      <div className={styles.wrapper}>
+        <Tabs selectedTab={selectedTab} tabs={tabs} onSelect={setSelectedTab} />
+        <Timer completed={completions[selectedTab] || 0} timer={timer} />
 
-          <div>
-            <div className={styles.buttons}>
-              <button className={styles.play} onClick={toggleRunning}>
-                {isRunning ? 'Pause' : 'Play'}
-              </button>
-              <button className={styles.reset} onClick={restart}>
-                <IoRefresh />
-              </button>
-              <button
-                className={styles.setting}
-                onClick={() => setShowSettings(true)}
-              >
-                <IoSettingsOutline />
-              </button>
-            </div>
+        <div>
+          <div className={styles.buttons}>
+            <button className={styles.play} onClick={toggleRunning}>
+              {isRunning ? 'Pause' : 'Play'}
+            </button>
+            <button className={styles.reset} onClick={restart}>
+              <IoRefresh />
+            </button>
+            <button
+              className={styles.setting}
+              onClick={() => setShowSettings(true)}
+            >
+              <IoSettingsOutline />
+            </button>
           </div>
         </div>
-      </Window>
+      </div>
 
       <Modal show={showSettings} onClose={() => setShowSettings(false)}>
         <Settings

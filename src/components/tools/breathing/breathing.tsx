@@ -66,6 +66,20 @@ interface BreathingProps {
 }
 
 export function Breathing({ isOpen, onClose }: BreathingProps) {
+  return (
+    <Window
+      contained
+      isOpen={isOpen}
+      title="Breathing Exercise"
+      windowName="breathing"
+      onClose={onClose}
+    >
+      <BreathingContent />
+    </Window>
+  );
+}
+
+export function BreathingContent() {
   const [selectedExercise, setSelectedExercise] =
     useState<Exercise>('4-7-8 Breathing');
 
@@ -164,13 +178,7 @@ export function Breathing({ isOpen, onClose }: BreathingProps) {
   }, [running]);
 
   return (
-    <Window
-      contained
-      isOpen={isOpen}
-      title="Breathing Exercise"
-      windowName="breathing"
-      onClose={onClose}
-    >
+    <>
       <div className={styles.wrapper}>
         <div className={styles.exercise}>
           <div className={styles.timer}>
@@ -277,6 +285,6 @@ export function Breathing({ isOpen, onClose }: BreathingProps) {
           </div>
         )}
       </div>
-    </Window>
+    </>
   );
 }

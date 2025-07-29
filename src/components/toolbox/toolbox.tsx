@@ -8,6 +8,7 @@ interface ToolboxProps {
 }
 
 const apps: Record<string, string> = {
+  ambient: 'Ambient Sounds',
   breathing: 'Breathing Exercise',
   countdown: 'Countdown Timer',
   notepad: 'Notepad',

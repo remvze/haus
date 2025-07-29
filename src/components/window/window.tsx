@@ -14,8 +14,10 @@ import { usePrevious } from '@/hooks/use-previous';
 interface WindowProps {
   children: React.ReactNode;
   contained?: boolean;
+  containerWidth?: number;
   isOpen: boolean;
   onClose: () => void;
+  persist?: boolean;
   title: string;
   windowName: string;
 }
@@ -23,8 +25,10 @@ interface WindowProps {
 export function Window({
   children,
   contained = false,
+  containerWidth = 400,
   isOpen,
   onClose,
+  persist = false,
   title,
   windowName,
 }: WindowProps) {
@@ -40,8 +44,6 @@ export function Window({
   const windowSize = useWindowSize();
   const previousPosition = usePrevious(position);
   const previousSize = usePrevious(size);
-
-  useEffect(() => console.log({ previousPosition }), [previousPosition]);
 
   const { bringToFront, indices, registerWindow } = useWindows();
   const zIndex = indices[id.current];
@@ -92,12 +94,13 @@ export function Window({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen && !persist) return null;
+  if (!zIndex) return null;
 
   return (
     <Rnd
       bounds="parent"
-      className={styles.window}
+      className={cn(styles.window, !isOpen && styles.hidden)}
       dragHandleClassName="window-header"
       minHeight={200}
       minWidth={300}
@@ -117,12 +120,19 @@ export function Window({
           <button className={styles.fullscreen} onClick={handleFullscreen}>
             {isFullscreen ? <RiFullscreenExitLine /> : <RiFullscreenFill />}
           </button>
-          <button className={styles.primary} onClick={onClose}>
+          <button
+            className={styles.primary}
+            onClick={onClose}
+            onMouseDown={e => e.stopPropagation()}
+          >
             <IoIosClose />
           </button>
         </div>
       </header>
-      <div className={cn(styles.content, contained && styles.contained)}>
+      <div
+        className={cn(styles.content, contained && styles.contained)}
+        style={{ ...(contained ? { maxWidth: containerWidth } : {}) }}
+      >
         {children}
       </div>
     </Rnd>

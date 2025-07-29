@@ -13,6 +13,20 @@ interface CountdownProps {
 }
 
 export function Countdown({ isOpen, onClose }: CountdownProps) {
+  return (
+    <Window
+      contained
+      isOpen={isOpen}
+      title="Countdown Timer"
+      windowName="countdown"
+      onClose={onClose}
+    >
+      <CountdownContent />
+    </Window>
+  );
+}
+
+export function CountdownContent() {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -70,13 +84,8 @@ export function Countdown({ isOpen, onClose }: CountdownProps) {
   const elapsedTime = initialTime - timeLeft;
 
   return (
-    <Window
-      contained
-      isOpen={isOpen}
-      title="Countdown Timer"
-      windowName="countdown"
-      onClose={onClose}
-    >
+    <>
+      {' '}
       <div className={styles.wrapper}>
         {isFormVisible ? (
           <div className={styles.formContainer}>
@@ -149,6 +158,6 @@ export function Countdown({ isOpen, onClose }: CountdownProps) {
           </div>
         )}
       </div>
-    </Window>
+    </>
   );
 }

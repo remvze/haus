@@ -12,6 +12,10 @@
   background-size: 10px 10px;
   border: 1px solid var(--color-neutral-300);
 
+  &.hidden {
+    display: none !important;
+  }
+
   & .header {
     display: flex;
     align-items: center;
