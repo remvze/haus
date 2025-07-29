@@ -26,10 +26,15 @@
     background-color: var(--color-neutral-50);
     border-bottom: 1px solid var(--color-neutral-300);
 
-    & h3 {
-      padding: 0 12px;
-      font-size: var(--font-sm);
-      font-weight: 500;
+    & .handler {
+      flex-grow: 1;
+      height: 100%;
+
+      & h3 {
+        padding: 0 12px;
+        font-size: var(--font-sm);
+        font-weight: 500;
+      }
     }
 
     & div {

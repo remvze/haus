@@ -114,17 +114,15 @@ export function Window({
         setPosition({ x: position.x, y: position.y });
       }}
     >
-      <header className={cn('window-header', styles.header)}>
-        <h3>{title}</h3>
+      <header className={styles.header}>
+        <div className={cn('window-header', styles.handler)}>
+          <h3>{title}</h3>
+        </div>
         <div>
           <button className={styles.fullscreen} onClick={handleFullscreen}>
             {isFullscreen ? <RiFullscreenExitLine /> : <RiFullscreenFill />}
           </button>
-          <button
-            className={styles.primary}
-            onClick={onClose}
-            onMouseDown={e => e.stopPropagation()}
-          >
+          <button className={styles.primary} onClick={onClose}>
             <IoIosClose />
           </button>
         </div>
