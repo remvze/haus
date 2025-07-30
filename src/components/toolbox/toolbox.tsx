@@ -35,23 +35,31 @@ export function Toolbox({ openApp, openApps }: ToolboxProps) {
   }, [notOpenApps]);
 
   return (
-    <form className={styles.toolbox} onSubmit={handleSubmit}>
-      <select
-        disabled={notOpenApps.length === 0}
-        value={selected}
-        onChange={e => setSelected(e.target.value)}
-      >
-        {notOpenApps.length > 0 ? (
-          notOpenApps.map(app => (
-            <option key={app} value={app}>
-              {apps[app]}
-            </option>
-          ))
-        ) : (
-          <option value="">all apps open</option>
-        )}
-      </select>
-      <button>Open</button>
-    </form>
+    <div className={styles.container}>
+      <form className={styles.toolbox} onSubmit={handleSubmit}>
+        <select
+          disabled={notOpenApps.length === 0}
+          value={selected}
+          onChange={e => setSelected(e.target.value)}
+        >
+          {notOpenApps.length > 0 ? (
+            notOpenApps.map(app => (
+              <option key={app} value={app}>
+                {apps[app]}
+              </option>
+            ))
+          ) : (
+            <option value="">all apps open</option>
+          )}
+        </select>
+        <button>Open</button>
+      </form>
+
+      <div className={styles.links}>
+        <a href="https://github.com/remvze/haus">Source Code</a>
+        <span>|</span>
+        <a href="https://coff.ee/remvze">By Me a Coffee</a>
+      </div>
+    </div>
   );
 }

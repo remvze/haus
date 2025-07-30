@@ -4,6 +4,7 @@
   width: 90%;
   max-width: 350px;
   height: 44px;
+  margin: 0 auto;
   background-color: var(--color-neutral-50);
   border: 1px solid var(--color-neutral-200);
 
@@ -31,5 +32,27 @@
     background: var(--color-neutral-100);
     border: none;
     border-left: 1px solid var(--color-neutral-200);
+  }
+}
+
+.container {
+  width: 100%;
+
+  & .links {
+    display: flex;
+    column-gap: 12px;
+    justify-content: center;
+    margin-top: 16px;
+    font-size: var(--font-xsm);
+
+    & a {
+      font-weight: 500;
+      color: var(--color-foreground);
+      text-decoration: none;
+    }
+
+    & span {
+      color: var(--color-foreground-subtler);
+    }
   }
 }
