@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import styles from './toolbox.module.css';
+import { cn } from '@/helpers/styles';
+import { AnimatePresence, motion } from 'motion/react';
 
 interface ToolboxProps {
   openApp: (app: string) => void;
@@ -34,32 +36,65 @@ export function Toolbox({ openApp, openApps }: ToolboxProps) {
     setSelected(notOpenApps[0]);
   }, [notOpenApps]);
 
-  return (
-    <div className={styles.container}>
-      <form className={styles.toolbox} onSubmit={handleSubmit}>
-        <select
-          disabled={notOpenApps.length === 0}
-          value={selected}
-          onChange={e => setSelected(e.target.value)}
-        >
-          {notOpenApps.length > 0 ? (
-            notOpenApps.map(app => (
-              <option key={app} value={app}>
-                {apps[app]}
-              </option>
-            ))
-          ) : (
-            <option value="">all apps open</option>
-          )}
-        </select>
-        <button>Open</button>
-      </form>
+  useEffect(() => console.log({ openApps }), [openApps]);
 
-      <div className={styles.links}>
-        <a href="https://github.com/remvze/haus">Source Code</a>
-        <span>|</span>
-        <a href="https://coff.ee/remvze">By Me a Coffee</a>
-      </div>
-    </div>
+  return (
+    <AnimatePresence>
+      {openApps.length === 0 ? (
+        <div className={styles.container}>
+          <motion.form
+            className={styles.toolbox}
+            layoutId="form"
+            onSubmit={handleSubmit}
+          >
+            <select
+              disabled={notOpenApps.length === 0}
+              value={selected}
+              onChange={e => setSelected(e.target.value)}
+            >
+              {notOpenApps.length > 0 ? (
+                notOpenApps.map(app => (
+                  <option key={app} value={app}>
+                    {apps[app]}
+                  </option>
+                ))
+              ) : (
+                <option value="">all apps open</option>
+              )}
+            </select>
+            <button>Open</button>
+          </motion.form>
+
+          <div className={styles.links}>
+            <a href="https://github.com/remvze/haus">Source Code</a>
+            <span>|</span>
+            <a href="https://coff.ee/remvze">By Me a Coffee</a>
+          </div>
+        </div>
+      ) : (
+        <motion.form
+          className={cn(styles.toolbox, styles.fixed)}
+          layoutId="form"
+          onSubmit={handleSubmit}
+        >
+          <select
+            disabled={notOpenApps.length === 0}
+            value={selected}
+            onChange={e => setSelected(e.target.value)}
+          >
+            {notOpenApps.length > 0 ? (
+              notOpenApps.map(app => (
+                <option key={app} value={app}>
+                  {apps[app]}
+                </option>
+              ))
+            ) : (
+              <option value="">all apps open</option>
+            )}
+          </select>
+          <button>Open</button>
+        </motion.form>
+      )}
+    </AnimatePresence>
   );
 }
