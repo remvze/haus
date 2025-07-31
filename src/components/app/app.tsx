@@ -28,7 +28,7 @@ export function App() {
   };
 
   const closeApp = (app: string) => {
-    setOpenApps(prev => prev.filter(a => a !== app));
+    setOpenApps(prev => prev.filter(a => a !== app).filter(Boolean));
   };
 
   return (
