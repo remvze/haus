@@ -53,6 +53,12 @@ export function Window({
   }, [registerWindow]);
 
   useEffect(() => {
+    if (isOpen) {
+      bringToFront(id.current);
+    }
+  }, [isOpen, bringToFront]);
+
+  useEffect(() => {
     const handleResize = () => {
       const width = parseInt(size.width);
       const height = parseInt(size.height);
@@ -127,11 +133,13 @@ export function Window({
           </button>
         </div>
       </header>
-      <div
-        className={cn(styles.content, contained && styles.contained)}
-        style={{ ...(contained ? { maxWidth: containerWidth } : {}) }}
-      >
-        {children}
+      <div className={styles.scroll}>
+        <div
+          className={cn(styles.content, contained && styles.contained)}
+          style={{ ...(contained ? { maxWidth: containerWidth } : {}) }}
+        >
+          {children}
+        </div>
       </div>
     </Rnd>
   );

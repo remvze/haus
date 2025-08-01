@@ -36,8 +36,6 @@ export function Toolbox({ openApp, openApps }: ToolboxProps) {
     setSelected(notOpenApps[0]);
   }, [notOpenApps]);
 
-  useEffect(() => console.log({ openApps }), [openApps]);
-
   return (
     <AnimatePresence>
       {openApps.length === 0 ? (
