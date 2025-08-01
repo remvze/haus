@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: haus
+  name: haus-ingress
+  annotations:
+   # cert-manager.io/cluster-issuer: <your-cert-mgr-cluster-issuer> - Uncomment and edit to add SSL
+spec:
+  rules:
+    - host: <your.subdomain.local>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: haus-svc
+                port:
+                  number: 8080
+  # tls: - Uncomment and edit to add SSL
+  #   - hosts:
+  #       - desk.dgse.cloud
+  #     secretName: letsencrypt
