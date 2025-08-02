@@ -1,6 +1,6 @@
 services:
   timesy:
-    image: ghcr.io/usehaus/haus
+    image: ghcr.io/awwwsm/haus
     logging:
       options:
         max-size: 1g

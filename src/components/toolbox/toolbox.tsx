@@ -64,7 +64,7 @@ export function Toolbox({ openApp, openApps }: ToolboxProps) {
           </motion.form>
 
           <div className={styles.links}>
-            <a href="https://github.com/usehaus/haus">Source Code</a>
+            <a href="https://github.com/awwwsm/haus">Source Code</a>
             <span>|</span>
             <a href="https://coff.ee/remvze">By Me a Coffee</a>
           </div>
