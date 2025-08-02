@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/usehaus/haus/compare/v0.0.2...v0.0.3) (2025-08-02)
+
+
+### 🐛 Bug Fixes
+
+* wip ([f388625](https://github.com/usehaus/haus/commit/f388625b00b842658bfd8c76525588ce30a46ea5))
+
+
+### ✨ Features
+
+* add links ([58cc86c](https://github.com/usehaus/haus/commit/58cc86c3a8eb41641f499a128260ba1d468ad1dc))
+* bring to front on open ([82bd7e5](https://github.com/usehaus/haus/commit/82bd7e57ca68b63d6d8d3c19de363dac065c53ef))
+* **ci:** Added sample deployment for Kubernetes support. ([a5d0d2f](https://github.com/usehaus/haus/commit/a5d0d2f9039124707c765e5ce23fc899d02dd2fc))
+* replace the form on open ([5d7696e](https://github.com/usehaus/haus/commit/5d7696edb836aab68b6fe7d0111a23bfbc962470))
+
 ### [0.0.2](https://github.com/awwwsm/haus/compare/v0.0.1...v0.0.2) (2025-07-29)
 
 ### 0.0.1 (2025-07-29)
