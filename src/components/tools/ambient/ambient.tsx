@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { BiPause, BiPlay, BiUndo, BiTrash } from 'react-icons/bi';
+import { Howler } from 'howler';
 
 import { Window } from '@/components/window';
 
@@ -56,6 +57,22 @@ export function AmbientContent() {
   useEffect(() => {
     return () => pause();
   }, [pause]);
+
+  useEffect(() => {
+    const onChange = () => {
+      const { ctx } = Howler;
+
+      if (ctx && !document.hidden) {
+        setTimeout(() => {
+          ctx.resume();
+        }, 100);
+      }
+    };
+
+    document.addEventListener('visibilitychange', onChange, false);
+
+    return () => document.removeEventListener('visibilitychange', onChange);
+  }, []);
 
   return (
     <>
