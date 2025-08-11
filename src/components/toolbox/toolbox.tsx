@@ -30,6 +30,11 @@ export function Toolbox({ minimizedApps, openApp, openApps }: ToolboxProps) {
     [openApps, minimizedApps],
   );
 
+  const nonMinimizedOpenApps = useMemo(
+    () => openApps.filter(app => !minimizedApps.includes(app)),
+    [openApps, minimizedApps],
+  );
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -42,7 +47,7 @@ export function Toolbox({ minimizedApps, openApp, openApps }: ToolboxProps) {
 
   return (
     <AnimatePresence>
-      {openApps.length === 0 ? (
+      {nonMinimizedOpenApps.length === 0 ? (
         <div className={styles.container}>
           <motion.form
             className={styles.toolbox}
