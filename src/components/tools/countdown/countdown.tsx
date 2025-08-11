@@ -8,18 +8,27 @@ import { cn } from '@/helpers/styles';
 import styles from './countdown.module.css';
 
 interface CountdownProps {
+  isMinimized: boolean;
   isOpen: boolean;
   onClose: () => void;
+  onMinimize: () => void;
 }
 
-export function Countdown({ isOpen, onClose }: CountdownProps) {
+export function Countdown({
+  isMinimized,
+  isOpen,
+  onClose,
+  onMinimize,
+}: CountdownProps) {
   return (
     <Window
       contained
-      isOpen={isOpen}
+      isOpen={isOpen && !isMinimized}
+      persist={isMinimized}
       title="Countdown Timer"
       windowName="countdown"
       onClose={onClose}
+      onMinimize={onMinimize}
     >
       <CountdownContent />
     </Window>

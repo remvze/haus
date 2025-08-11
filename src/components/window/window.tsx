@@ -3,6 +3,7 @@ import { Rnd } from 'react-rnd';
 import { v4 as uuid } from 'uuid';
 import { IoIosClose } from 'react-icons/io';
 import { RiFullscreenFill, RiFullscreenExitLine } from 'react-icons/ri';
+import { VscChromeMinimize } from 'react-icons/vsc';
 
 import styles from './window.module.css';
 import { useWindows } from '@/contexts/windows';
@@ -17,6 +18,7 @@ interface WindowProps {
   containerWidth?: number;
   isOpen: boolean;
   onClose: () => void;
+  onMinimize?: () => void;
   persist?: boolean;
   title: string;
   windowName: string;
@@ -28,6 +30,7 @@ export function Window({
   containerWidth = 400,
   isOpen,
   onClose,
+  onMinimize,
   persist = false,
   title,
   windowName,
@@ -125,6 +128,12 @@ export function Window({
           <h3>{title}</h3>
         </div>
         <div>
+          {typeof onMinimize === 'function' && (
+            <button className={styles.fullscreen} onClick={onMinimize}>
+              <VscChromeMinimize />
+            </button>
+          )}
+
           <button className={styles.fullscreen} onClick={handleFullscreen}>
             {isFullscreen ? <RiFullscreenExitLine /> : <RiFullscreenFill />}
           </button>

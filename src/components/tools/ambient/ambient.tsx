@@ -9,19 +9,28 @@ import { Categories } from './categories';
 import { useSoundStore } from '@/stores/sound';
 
 interface AmbientProps {
+  isMinimized: boolean;
   isOpen: boolean;
   onClose: () => void;
+  onMinimize: () => void;
 }
 
-export function Ambient({ isOpen, onClose }: AmbientProps) {
+export function Ambient({
+  isMinimized,
+  isOpen,
+  onClose,
+  onMinimize,
+}: AmbientProps) {
   return (
     <Window
       contained
       containerWidth={700}
-      isOpen={isOpen}
+      isOpen={isOpen && !isMinimized}
+      persist={isMinimized}
       title="Ambient Sounds"
       windowName="ambient"
       onClose={onClose}
+      onMinimize={onMinimize}
     >
       <AmbientContent />
     </Window>

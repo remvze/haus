@@ -5,6 +5,7 @@ import { cn } from '@/helpers/styles';
 import { AnimatePresence, motion } from 'motion/react';
 
 interface ToolboxProps {
+  minimizedApps: Array<string>;
   openApp: (app: string) => void;
   openApps: Array<string>;
 }
@@ -18,12 +19,15 @@ const apps: Record<string, string> = {
   todo: 'To-do Checklist',
 };
 
-export function Toolbox({ openApp, openApps }: ToolboxProps) {
+export function Toolbox({ minimizedApps, openApp, openApps }: ToolboxProps) {
   const [selected, setSelected] = useState(Object.keys(apps)[0]);
 
   const notOpenApps = useMemo(
-    () => Object.keys(apps).filter(app => !openApps.includes(app)),
-    [openApps],
+    () =>
+      Object.keys(apps).filter(
+        app => !openApps.includes(app) || minimizedApps.includes(app),
+      ),
+    [openApps, minimizedApps],
   );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,7 +57,7 @@ export function Toolbox({ openApp, openApps }: ToolboxProps) {
               {notOpenApps.length > 0 ? (
                 notOpenApps.map(app => (
                   <option key={app} value={app}>
-                    {apps[app]}
+                    {apps[app]} {minimizedApps.includes(app) && '(Minimized)'}
                   </option>
                 ))
               ) : (
@@ -83,7 +87,7 @@ export function Toolbox({ openApp, openApps }: ToolboxProps) {
             {notOpenApps.length > 0 ? (
               notOpenApps.map(app => (
                 <option key={app} value={app}>
-                  {apps[app]}
+                  {apps[app]} {minimizedApps.includes(app) && '(Minimized)'}
                 </option>
               ))
             ) : (

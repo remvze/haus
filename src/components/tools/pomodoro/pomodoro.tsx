@@ -10,18 +10,27 @@ import styles from './pomodoro.module.css';
 import { cn } from '@/helpers/styles';
 
 interface PomodoroProps {
+  isMinimized: boolean;
   isOpen: boolean;
   onClose: () => void;
+  onMinimize: () => void;
 }
 
-export function Pomodoro({ isOpen, onClose }: PomodoroProps) {
+export function Pomodoro({
+  isMinimized,
+  isOpen,
+  onClose,
+  onMinimize,
+}: PomodoroProps) {
   return (
     <Window
       contained
-      isOpen={isOpen}
+      isOpen={isOpen && !isMinimized}
+      persist={isMinimized}
       title="Pomodoro Timer"
       windowName="pomodoro"
       onClose={onClose}
+      onMinimize={onMinimize}
     >
       <PomodoroContent />
     </Window>
