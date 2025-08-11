@@ -12,12 +12,12 @@
 }
 
 .checkboxRoot[data-state='checked'] {
-  background: var(--color-neutral-950);
-  border: 2px solid var(--color-neutral-950);
+  background: var(--color-accent);
+  border: 2px solid var(--color-accent);
 }
 
 .checkboxIndicator {
   font-size: var(--font-2xsm);
-  color: var(--color-neutral-50);
+  color: var(--color-foreground);
   transform: translateY(2px);
 }

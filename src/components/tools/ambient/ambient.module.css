@@ -141,7 +141,7 @@
   &.selected {
     & .icon {
       color: var(--color-foreground);
-      background: #f76707;
+      background: var(--color-accent);
     }
 
     & .label {
@@ -264,7 +264,7 @@
       display: block;
       width: 100%;
       min-width: 0;
-      accent-color: #f76707;
+      accent-color: var(--color-accent);
     }
   }
 }

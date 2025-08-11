@@ -10,6 +10,7 @@
   --color-neutral-800: #e4e4e7;
   --color-neutral-900: #f4f4f5;
   --color-neutral-950: #fafafa;
+  --color-accent: #f76707;
 
   /* Foreground */
   --color-foreground: var(--color-neutral-950);
