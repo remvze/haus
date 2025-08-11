@@ -84,19 +84,23 @@ export const Sound = forwardRef<HTMLDivElement, SoundProps>(function Sound(
       onClick={handleClick}
       onKeyDown={handleKeyDown}
     >
-      <div className={styles.icon}>
-        {soundPlayer.isLoading ? (
-          <span aria-hidden="true" className={styles.spinner}>
-            <ImSpinner9 />
-          </span>
-        ) : (
-          <span aria-hidden="true">{icon}</span>
-        )}
+      <div className={styles.details}>
+        <div className={styles.icon}>
+          {soundPlayer.isLoading ? (
+            <span aria-hidden="true" className={styles.spinner}>
+              <ImSpinner9 />
+            </span>
+          ) : (
+            <span aria-hidden="true">{icon}</span>
+          )}
+        </div>
+        <div className={styles.label} id={id}>
+          {label}
+        </div>
       </div>
-      <div className={styles.label} id={id}>
-        {label}
+      <div className={styles.rangeWrapper}>
+        <Range id={id} label={label} />
       </div>
-      <Range id={id} label={label} />
     </div>
   );
 });
