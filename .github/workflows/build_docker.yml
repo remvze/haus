@@ -28,7 +28,7 @@ jobs:
 
       - name: 'Build and push Inventory Image'
         run: |
-          IMAGE_NAME="ghcr.io/awwwsm/haus"
+          IMAGE_NAME="ghcr.io/remvze/haus"
 
           GIT_TAG=${{ github.ref }}
           GIT_TAG=${GIT_TAG#refs/tags/}

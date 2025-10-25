@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: haus
-          image: 'ghcr.io/awwwsm/haus:v0.0.2' # Check for updates before deploying
+          image: 'ghcr.io/remvze/haus:v0.0.2' # Check for updates before deploying
           ports:
             - containerPort: 8080
