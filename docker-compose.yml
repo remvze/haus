@@ -1,6 +1,6 @@
 services:
-  timesy:
-    image: ghcr.io/awwwsm/haus
+  haus:
+    image: ghcr.io/remvze/haus
     logging:
       options:
         max-size: 1g
