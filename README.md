@@ -32,7 +32,7 @@ Haus is a simple, free, open-source online workstation. It provides a flexible w
 - 🎧 **Ambient Sound Player**: Background sounds for concentration.
 - 🌬️ **Breathing Exercise Tool**: Guided breathing for relaxation.
 - 🪟 **Custom Layout**: Movable and resizable tool windows.
-- 🔓 **No Account Needed** Everything works instantly.
+- 🔓 **No Account Needed**: Everything works instantly.
 - 🐳 **Self-hostable**: Docker image is available.
 
 ## Self-Hosting
