@@ -1,0 +1,63 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+
+  & .buttons {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+
+    & button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      font-size: var(--font-sm);
+      font-weight: 500;
+      color: var(--color-foreground-subtle);
+      cursor: pointer;
+      background-color: var(--color-neutral-200);
+      border: none;
+      border-radius: 0;
+      outline: none;
+      transition: 0.2s;
+
+      &:not(.primary):hover {
+        color: var(--color-foreground);
+      }
+
+      &.primary {
+        flex-grow: 1;
+        color: var(--color-neutral-50);
+        background-color: var(--color-neutral-950);
+      }
+    }
+  }
+}
+
+.timeFields {
+  display: flex;
+  column-gap: 12px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.autoStart {
+  color: var(--color-foreground-subtle);
+  user-select: none;
+
+  & label {
+    display: flex;
+    align-items: center;
+    max-width: max-content;
+  }
+
+  & input {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    accent-color: var(--color-foreground-subtler);
+  }
+}

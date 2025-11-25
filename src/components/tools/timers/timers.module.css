@@ -1,0 +1,19 @@
+.wrapper {
+  padding: 12px;
+}
+
+.timers {
+  margin-top: 48px;
+
+  & > header {
+    display: flex;
+    column-gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+
+    & .title {
+      font-weight: 500;
+      line-height: 1;
+    }
+  }
+}

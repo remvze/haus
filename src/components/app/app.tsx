@@ -6,11 +6,12 @@ import { StoreConsumer } from '../store-consumer';
 
 import styles from './app.module.css';
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import { Countdown } from '../tools/countdown';
 import { Pomodoro } from '../tools/pomodoro';
 import { Breathing } from '../tools/breathing';
 import { Ambient } from '../tools/ambient/ambient';
 import { useState } from 'react';
+import { Timers } from '../tools/timers';
+import { SnackbarProvider } from '@/contexts/snackbar';
 
 export function App() {
   const [openApps, setOpenApps] = useLocalStorage<Array<string>>(
@@ -44,48 +45,50 @@ export function App() {
 
   return (
     <StoreConsumer>
-      <WindowsProvider>
-        <div className={styles.app}>
-          <Toolbox
-            minimizedApps={minimizedApps}
-            openApp={openApp}
-            openApps={openApps}
-          />
+      <SnackbarProvider>
+        <WindowsProvider>
+          <div className={styles.app}>
+            <Toolbox
+              minimizedApps={minimizedApps}
+              openApp={openApp}
+              openApps={openApps}
+            />
 
-          <Notepad
-            isOpen={isAppOpen('notepad')}
-            onClose={() => closeApp('notepad')}
-          />
+            <Notepad
+              isOpen={isAppOpen('notepad')}
+              onClose={() => closeApp('notepad')}
+            />
 
-          <Todo isOpen={isAppOpen('todo')} onClose={() => closeApp('todo')} />
+            <Todo isOpen={isAppOpen('todo')} onClose={() => closeApp('todo')} />
 
-          <Countdown
-            isMinimized={isAppMinimized('countdown')}
-            isOpen={isAppOpen('countdown')}
-            onClose={() => closeApp('countdown')}
-            onMinimize={() => minimizeApp('countdown')}
-          />
+            <Pomodoro
+              isMinimized={isAppMinimized('pomodoro')}
+              isOpen={isAppOpen('pomodoro')}
+              onClose={() => closeApp('pomodoro')}
+              onMinimize={() => minimizeApp('pomodoro')}
+            />
 
-          <Pomodoro
-            isMinimized={isAppMinimized('pomodoro')}
-            isOpen={isAppOpen('pomodoro')}
-            onClose={() => closeApp('pomodoro')}
-            onMinimize={() => minimizeApp('pomodoro')}
-          />
+            <Breathing
+              isOpen={isAppOpen('breathing')}
+              onClose={() => closeApp('breathing')}
+            />
 
-          <Breathing
-            isOpen={isAppOpen('breathing')}
-            onClose={() => closeApp('breathing')}
-          />
+            <Ambient
+              isMinimized={isAppMinimized('ambient')}
+              isOpen={isAppOpen('ambient')}
+              onClose={() => closeApp('ambient')}
+              onMinimize={() => minimizeApp('ambient')}
+            />
 
-          <Ambient
-            isMinimized={isAppMinimized('ambient')}
-            isOpen={isAppOpen('ambient')}
-            onClose={() => closeApp('ambient')}
-            onMinimize={() => minimizeApp('ambient')}
-          />
-        </div>
-      </WindowsProvider>
+            <Timers
+              isMinimized={isAppMinimized('timers')}
+              isOpen={isAppOpen('timers')}
+              onClose={() => closeApp('timers')}
+              onMinimize={() => minimizeApp('timers')}
+            />
+          </div>
+        </WindowsProvider>
+      </SnackbarProvider>
     </StoreConsumer>
   );
 }

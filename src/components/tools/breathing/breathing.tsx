@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { IoIosPlay, IoIosRefresh } from 'react-icons/io';
 import { BsFillVolumeUpFill, BsFillVolumeMuteFill } from 'react-icons/bs';
 

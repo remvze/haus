@@ -1,0 +1,20 @@
+.wrapper {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  pointer-events: none;
+
+  & .snackbar {
+    width: max-content;
+    max-width: 90%;
+    padding: 12px 16px;
+    margin: 0 auto;
+    font-size: var(--font-sm);
+    pointer-events: fill;
+    background-color: var(--color-neutral-100);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+  }
+}

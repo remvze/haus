@@ -23,13 +23,20 @@ export function useSoundEffect(src: string, volume: number = 1) {
     if (sound) sound.volume(volume ?? 1);
   }, [sound, volume]);
 
-  const play = useCallback(() => {
-    if (sound) {
-      if (!sound.playing()) {
-        sound.play();
+  const play = useCallback(
+    (cb?: () => void) => {
+      if (sound) {
+        if (!sound.playing()) {
+          sound.play();
+
+          if (typeof cb === 'function') {
+            sound.once('end', cb);
+          }
+        }
       }
-    }
-  }, [sound]);
+    },
+    [sound],
+  );
 
   const stop = useCallback(() => {
     if (sound) sound.stop();
