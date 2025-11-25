@@ -15,6 +15,7 @@ const apps: Record<string, string> = {
   breathing: 'Breathing Exercise',
   notepad: 'Notepad',
   pomodoro: 'Pomodoro Timer',
+  settings: 'Settings',
   timers: 'Countdown Timers',
   todo: 'To-do Checklist',
 };

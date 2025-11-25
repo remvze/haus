@@ -8,6 +8,7 @@ import { Window } from '@/components/window';
 
 import styles from './pomodoro.module.css';
 import { cn } from '@/helpers/styles';
+import { useSettings } from '@/stores/settings';
 
 interface PomodoroProps {
   isMinimized: boolean;
@@ -38,7 +39,8 @@ export function Pomodoro({
 }
 
 export function PomodoroContent() {
-  const alarm = useSoundEffect('/sounds/alarm.mp3');
+  const volume = useSettings(state => state.alarmVolume);
+  const alarm = useSoundEffect('/sounds/alarm.mp3', volume);
 
   const [selectedTab, setSelectedTab] = useState('pomodoro');
   const [isRunning, setIsRunning] = useState(false);

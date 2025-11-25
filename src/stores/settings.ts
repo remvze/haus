@@ -21,7 +21,7 @@ export const useSettings = create<State & Actions>()(
     {
       name: 'haus:store:settings',
       partialize: state => ({
-        volume: state.alarmVolume,
+        alarmVolume: state.alarmVolume,
       }),
       skipHydration: true,
       storage: createJSONStorage(() => localStorage),

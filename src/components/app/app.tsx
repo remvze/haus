@@ -1,17 +1,20 @@
+import { useState } from 'react';
+
 import { Toolbox } from '../toolbox';
 import { Notepad } from '../tools/notepad';
 import { Todo } from '../tools/todo';
 import { WindowsProvider } from '@/contexts/windows';
 import { StoreConsumer } from '../store-consumer';
 
-import styles from './app.module.css';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Pomodoro } from '../tools/pomodoro';
 import { Breathing } from '../tools/breathing';
 import { Ambient } from '../tools/ambient/ambient';
-import { useState } from 'react';
 import { Timers } from '../tools/timers';
+import { Settings } from '../settings';
 import { SnackbarProvider } from '@/contexts/snackbar';
+
+import styles from './app.module.css';
 
 export function App() {
   const [openApps, setOpenApps] = useLocalStorage<Array<string>>(
@@ -85,6 +88,11 @@ export function App() {
               isOpen={isAppOpen('timers')}
               onClose={() => closeApp('timers')}
               onMinimize={() => minimizeApp('timers')}
+            />
+
+            <Settings
+              isOpen={isAppOpen('settings')}
+              onClose={() => closeApp('settings')}
             />
           </div>
         </WindowsProvider>
