@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { IoIosClose } from 'react-icons/io';
 import { RiFullscreenFill, RiFullscreenExitLine } from 'react-icons/ri';
 import { VscChromeMinimize } from 'react-icons/vsc';
+import { IoLockClosedOutline, IoLockOpenOutline } from 'react-icons/io5';
 
 import styles from './window.module.css';
 import { useWindows } from '@/contexts/windows';
@@ -36,6 +37,10 @@ export function Window({
   windowName,
 }: WindowProps) {
   const id = useRef(uuid());
+  const [isLocked, setIsLocked] = useLocalStorage(
+    `haus:window:${windowName}:locked`,
+    false,
+  );
   const [position, setPosition] = useLocalStorage(
     `haus:window:${windowName}-position`,
     { x: 100, y: 100 },
@@ -47,6 +52,8 @@ export function Window({
   const windowSize = useWindowSize();
   const previousPosition = usePrevious(position);
   const previousSize = usePrevious(size);
+
+  const toggleLock = () => setIsLocked(prev => !prev);
 
   const { bringToFront, indices, registerWindow } = useWindows();
   const zIndex = indices[id.current];
@@ -91,6 +98,8 @@ export function Window({
   }, [position, size, windowSize]);
 
   const handleFullscreen = () => {
+    if (isLocked) return;
+
     if (isFullscreen) {
       setPosition(previousPosition ?? { x: 100, y: 100 });
       setSize(previousSize ?? { height: '300px', width: '300px' });
@@ -110,7 +119,9 @@ export function Window({
     <Rnd
       bounds="parent"
       className={cn(styles.window, !isOpen && styles.hidden)}
+      disableDragging={isLocked}
       dragHandleClassName="window-header"
+      enableResizing={!isLocked}
       minHeight={200}
       minWidth={300}
       position={position}
@@ -123,11 +134,18 @@ export function Window({
         setPosition({ x: position.x, y: position.y });
       }}
     >
-      <header className={styles.header}>
+      <header className={cn(styles.header, isLocked && styles.locked)}>
         <div className={cn('window-header', styles.handler)}>
           <h3>{title}</h3>
         </div>
         <div>
+          <button
+            className={cn(styles.lock, isLocked && styles.locked)}
+            onClick={toggleLock}
+          >
+            {isLocked ? <IoLockClosedOutline /> : <IoLockOpenOutline />}
+          </button>
+
           {typeof onMinimize === 'function' && (
             <button className={styles.fullscreen} onClick={onMinimize}>
               <VscChromeMinimize />
