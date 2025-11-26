@@ -57,6 +57,7 @@ export function Toolbox({ minimizedApps, openApp, openApps }: ToolboxProps) {
             onSubmit={handleSubmit}
           >
             <select
+              aria-label="Tool Selection"
               disabled={notOpenApps.length === 0}
               value={selected}
               onChange={e => setSelected(e.target.value)}
@@ -87,6 +88,7 @@ export function Toolbox({ minimizedApps, openApp, openApps }: ToolboxProps) {
           onSubmit={handleSubmit}
         >
           <select
+            aria-label="Tool Selection"
             disabled={notOpenApps.length === 0}
             value={selected}
             onChange={e => setSelected(e.target.value)}
