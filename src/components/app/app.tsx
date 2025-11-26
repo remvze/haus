@@ -11,6 +11,7 @@ import { Pomodoro } from '../tools/pomodoro';
 import { Breathing } from '../tools/breathing';
 import { Ambient } from '../tools/ambient/ambient';
 import { Timers } from '../tools/timers';
+import { Lofi } from '../tools/lofi';
 import { Settings } from '../settings';
 import { SnackbarProvider } from '@/contexts/snackbar';
 
@@ -88,6 +89,13 @@ export function App() {
               isOpen={isAppOpen('timers')}
               onClose={() => closeApp('timers')}
               onMinimize={() => minimizeApp('timers')}
+            />
+
+            <Lofi
+              isMinimized={isAppMinimized('lofi')}
+              isOpen={isAppOpen('lofi')}
+              onClose={() => closeApp('lofi')}
+              onMinimize={() => minimizeApp('lofi')}
             />
 
             <Settings

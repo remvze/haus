@@ -13,6 +13,7 @@ interface ToolboxProps {
 const apps: Record<string, string> = {
   ambient: 'Ambient Sounds',
   breathing: 'Breathing Exercise',
+  lofi: 'Lofi Music',
   notepad: 'Notepad',
   pomodoro: 'Pomodoro Timer',
   settings: 'Settings',
