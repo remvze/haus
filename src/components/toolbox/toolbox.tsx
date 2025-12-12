@@ -78,7 +78,7 @@ export function Toolbox({ minimizedApps, openApp, openApps }: ToolboxProps) {
           <div className={styles.links}>
             <a href="https://github.com/remvze/haus">Source Code</a>
             <span>|</span>
-            <a href="https://coff.ee/remvze">By Me a Coffee</a>
+            <a href="https://coff.ee/remvze">Buy Me a Coffee</a>
           </div>
         </div>
       ) : (
