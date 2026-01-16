@@ -3,24 +3,15 @@ import { BiPause, BiPlay, BiUndo, BiTrash } from 'react-icons/bi';
 import { Howler } from 'howler';
 
 import { Window } from '@/components/window';
+import { useWindowState } from '@/contexts/window-state';
 
 import styles from './ambient.module.css';
 import { Categories } from './categories';
 import { useSoundStore } from '@/stores/sound';
 
-interface AmbientProps {
-  isMinimized: boolean;
-  isOpen: boolean;
-  onClose: () => void;
-  onMinimize: () => void;
-}
+export function Ambient() {
+  const { isOpen, isMinimized, onClose, onMinimize } = useWindowState('ambient');
 
-export function Ambient({
-  isMinimized,
-  isOpen,
-  onClose,
-  onMinimize,
-}: AmbientProps) {
   return (
     <Window
       contained

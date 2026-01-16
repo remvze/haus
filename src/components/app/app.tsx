@@ -1,110 +1,47 @@
-import { useState } from 'react';
+import { SnackbarProvider } from "@/contexts/snackbar";
+import { WindowStateProvider } from "@/contexts/window-state";
+import { WindowsProvider } from "@/contexts/windows";
+import { Settings } from "../settings";
+import { StoreConsumer } from "../store-consumer";
+import { Toolbox } from "../toolbox";
+import { Ambient } from "../tools/ambient/ambient";
+import { Breathing } from "../tools/breathing";
+import { Lofi } from "../tools/lofi";
+import { Notepad } from "../tools/notepad";
+import { Pomodoro } from "../tools/pomodoro";
+import { Timers } from "../tools/timers";
+import { Todo } from "../tools/todo";
 
-import { Toolbox } from '../toolbox';
-import { Notepad } from '../tools/notepad';
-import { Todo } from '../tools/todo';
-import { WindowsProvider } from '@/contexts/windows';
-import { StoreConsumer } from '../store-consumer';
-
-import { useLocalStorage } from '@/hooks/use-local-storage';
-import { Pomodoro } from '../tools/pomodoro';
-import { Breathing } from '../tools/breathing';
-import { Ambient } from '../tools/ambient/ambient';
-import { Timers } from '../tools/timers';
-import { Lofi } from '../tools/lofi';
-import { Background } from '../background';
-import { Settings } from '../settings';
-import { SnackbarProvider } from '@/contexts/snackbar';
-
-import styles from './app.module.css';
+import styles from "./app.module.css";
 
 export function App() {
-  const [openApps, setOpenApps] = useLocalStorage<Array<string>>(
-    'haus:open-windows',
-    [],
-  );
-  const [minimizedApps, setMinimizedApps] = useState<Array<string>>([]);
+	return (
+		<StoreConsumer>
+			<SnackbarProvider>
+				<WindowStateProvider>
+					<WindowsProvider>
+						<div className={styles.app}>
+							<Toolbox />
 
-  const isAppOpen = (app: string) => {
-    return openApps.some(a => a === app);
-  };
+							<Notepad />
 
-  const isAppMinimized = (app: string) => {
-    return minimizedApps.some(a => a === app);
-  };
+							<Todo />
 
-  const openApp = (app: string) => {
-    if (isAppOpen(app) && !isAppMinimized(app)) return;
+							<Pomodoro />
 
-    setOpenApps(prev => [...prev, app]);
-    setMinimizedApps(prev => prev.filter(a => a !== app).filter(Boolean));
-  };
+							<Breathing />
 
-  const closeApp = (app: string) => {
-    setOpenApps(prev => prev.filter(a => a !== app).filter(Boolean));
-  };
+							<Ambient />
 
-  const minimizeApp = (app: string) => {
-    setMinimizedApps(prev => [...prev, app]);
-  };
+							<Timers />
 
-  return (
-    <StoreConsumer>
-      <SnackbarProvider>
-        <WindowsProvider>
-          <div className={styles.app}>
-            <Background />
+							<Lofi />
 
-            <Toolbox
-              minimizedApps={minimizedApps}
-              openApp={openApp}
-              openApps={openApps}
-            />
-
-            <Notepad
-              isOpen={isAppOpen('notepad')}
-              onClose={() => closeApp('notepad')}
-            />
-
-            <Todo isOpen={isAppOpen('todo')} onClose={() => closeApp('todo')} />
-
-            <Pomodoro
-              isMinimized={isAppMinimized('pomodoro')}
-              isOpen={isAppOpen('pomodoro')}
-              onClose={() => closeApp('pomodoro')}
-              onMinimize={() => minimizeApp('pomodoro')}
-            />
-
-            <Breathing
-              isOpen={isAppOpen('breathing')}
-              onClose={() => closeApp('breathing')}
-            />
-
-            <Ambient
-              isMinimized={isAppMinimized('ambient')}
-              isOpen={isAppOpen('ambient')}
-              onClose={() => closeApp('ambient')}
-              onMinimize={() => minimizeApp('ambient')}
-            />
-
-            <Timers
-              isMinimized={isAppMinimized('timers')}
-              isOpen={isAppOpen('timers')}
-              onClose={() => closeApp('timers')}
-              onMinimize={() => minimizeApp('timers')}
-            />
-
-            <Lofi
-              isMinimized={isAppMinimized('lofi')}
-              isOpen={isAppOpen('lofi')}
-              onClose={() => closeApp('lofi')}
-              onMinimize={() => minimizeApp('lofi')}
-            />
-
-            <Settings />
-          </div>
-        </WindowsProvider>
-      </SnackbarProvider>
-    </StoreConsumer>
-  );
+							<Settings />
+						</div>
+					</WindowsProvider>
+				</WindowStateProvider>
+			</SnackbarProvider>
+		</StoreConsumer>
+	);
 }
