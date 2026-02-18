@@ -2,14 +2,14 @@ import type { AsciiPattern } from '../types';
 
 // --- constants ---
 
-const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF';
+const CHARS = '|';
 
-const TRAIL_DECAY_PER_SECOND = 0.05;  // how fast the alpha trail fades (lower = longer trail)
-const SPLASH_DECAY_PER_SECOND = 2.8;  // splashes fade faster than trail
-const SPLASH_GRAVITY = 5;             // rows/sec² pulling splash particles downward
-const IMPACT_FRAMES = 3;              // frames the '*' flash is visible at the hit point
-const ALPHA_CUTOFF = 0.05;            // below this alpha, cells are skipped entirely
-const SPLASH_CHAR_THRESHOLD = 0.4;    // above this alpha, use heavy directional char; below, use light
+const TRAIL_DECAY_PER_SECOND = 0.05; // how fast the alpha trail fades (lower = longer trail)
+const SPLASH_DECAY_PER_SECOND = 2; // splashes fade faster than trail
+const SPLASH_GRAVITY = 4; // rows/sec² pulling splash particles downward
+const IMPACT_FRAMES = 20; // frames the '*' flash is visible at the hit point
+const ALPHA_CUTOFF = 0.05; // below this alpha, cells are skipped entirely
+const SPLASH_CHAR_THRESHOLD = 0.4; // above this alpha, use heavy directional char; below, use light
 
 // --- types ---
 
@@ -38,14 +38,14 @@ interface Impact {
 
 // --- helpers ---
 
-// [AI] Encodes brightness as grey RGB so the trail shifts from white → dark grey,
+// Encodes brightness as grey RGB so the trail shifts from white → dark grey,
 // rather than becoming transparent against the background.
 const greyColor = (alpha: number): string => {
   const v = Math.floor(alpha * 255);
   return `rgb(${v},${v},${v})`;
 };
 
-// [AI] Directional chars based on horizontal velocity — angled particles read as a fan,
+// Directional chars based on horizontal velocity — angled particles read as a fan,
 // not a scattered pile of dots.
 const splashCharsFor = (vCol: number): { heavy: string; light: string } => {
   if (vCol < -0.8) return { heavy: '\\', light: ',' };
@@ -94,7 +94,7 @@ export class RainPattern implements AsciiPattern {
     this.renderSplashes(ctx, cols, rows, charW, charH);
   }
 
-  // [AI] init=true: wide stagger so drops arrive gradually across a large off-screen range.
+  // init=true: wide stagger so drops arrive gradually across a large off-screen range.
   // init=false (reset): short stagger so the column refills without a visible gap.
   private makeColumn(init = false): Column {
     return {
@@ -116,7 +116,7 @@ export class RainPattern implements AsciiPattern {
       const { heavy, light } = splashCharsFor(vCol);
       this.splashes.push({
         alpha: 0.75 + Math.random() * 0.25,
-        col: col + (Math.random() - 0.5),
+        col: col + (Math.random() - 0.5) * 3,
         heavyChar: heavy,
         lightChar: light,
         row: this.rows - 1,
@@ -164,7 +164,9 @@ export class RainPattern implements AsciiPattern {
       s.alpha -= decayAmount;
     }
 
-    this.splashes = this.splashes.filter(s => s.alpha > ALPHA_CUTOFF && s.row < this.rows);
+    this.splashes = this.splashes.filter(
+      s => s.alpha > ALPHA_CUTOFF && s.row < this.rows,
+    );
   }
 
   private updateImpacts(): void {
@@ -186,7 +188,11 @@ export class RainPattern implements AsciiPattern {
 
         const isHead = Math.floor(this.columns[col].y) === row;
         ctx.fillStyle = greyColor(isHead ? 1.0 : cellAlpha);
-        ctx.fillText(CHARS.charAt(this.chars[row][col]), col * charW, (row + 1) * charH);
+        ctx.fillText(
+          CHARS.charAt(this.chars[row][col]),
+          col * charW,
+          (row + 1) * charH,
+        );
       }
     }
   }
