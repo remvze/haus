@@ -1,6 +1,6 @@
 .canvas {
   inset: 0;
-  opacity: 0.15;
+  opacity: 0.2;
   pointer-events: none;
   position: fixed;
   z-index: 0;
