@@ -5,8 +5,8 @@ import type { AsciiPattern } from '../types';
 const CHARS = '|';
 
 const TRAIL_DECAY_PER_SECOND = 0.05; // how fast the alpha trail fades (lower = longer trail)
-const SPLASH_DECAY_PER_SECOND = 2; // splashes fade faster than trail
-const SPLASH_GRAVITY = 4; // rows/sec² pulling splash particles downward
+const SPLASH_DECAY_PER_SECOND = 1.5; // splashes fade faster than trail
+const SPLASH_GRAVITY = 3; // rows/sec² pulling splash particles downward
 const IMPACT_FRAMES = 20; // frames the '*' flash is visible at the hit point
 const ALPHA_CUTOFF = 0.05; // below this alpha, cells are skipped entirely
 const SPLASH_CHAR_THRESHOLD = 0.4; // above this alpha, use heavy directional char; below, use light
@@ -112,7 +112,7 @@ export class RainPattern implements AsciiPattern {
 
     const count = Math.floor(Math.random() * 3) + 2;
     for (let i = 0; i < count; i++) {
-      const vCol = (Math.random() - 0.5) * 6;
+      const vCol = (Math.random() - 0.5) * 12;
       const { heavy, light } = splashCharsFor(vCol);
       this.splashes.push({
         alpha: 0.75 + Math.random() * 0.25,

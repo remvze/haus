@@ -1,37 +1,50 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export type BackgroundPattern = 'dots' | 'grid' | 'none';
+export type PatternId =
+  | 'fire'
+  | 'rain'
+  | 'bonsai'
+  | 'snow'
+  | 'waves'
+  | 'aurora'
+  | 'weather';
+
+export interface Location {
+  lat: number;
+  lng: number;
+  name: string;
+}
 
 interface State {
   alarmVolume: number;
-  backgroundOpacity: number;
-  backgroundPattern: BackgroundPattern;
+  backgroundPattern: PatternId;
+  location: Location | null;
 }
 
 interface Actions {
   setAlarmVolume: (volume: number) => void;
-  setBackgroundOpacity: (opacity: number) => void;
-  setBackgroundPattern: (pattern: BackgroundPattern) => void;
+  setBackgroundPattern: (pattern: PatternId) => void;
+  setLocation: (location: Location | null) => void;
 }
 
 export const useSettings = create<State & Actions>()(
   persist(
     set => ({
       alarmVolume: 0.5,
-      backgroundOpacity: 1,
-      backgroundPattern: 'dots',
+      backgroundPattern: 'fire',
+      location: null,
 
       setAlarmVolume(volume) {
         set({ alarmVolume: volume });
       },
 
-      setBackgroundOpacity(opacity) {
-        set({ backgroundOpacity: opacity });
-      },
-
       setBackgroundPattern(pattern) {
         set({ backgroundPattern: pattern });
+      },
+
+      setLocation(location) {
+        set({ location });
       },
     }),
     {
@@ -49,8 +62,8 @@ export const useSettings = create<State & Actions>()(
       name: 'haus:store:settings',
       partialize: state => ({
         alarmVolume: state.alarmVolume,
-        backgroundOpacity: state.backgroundOpacity,
         backgroundPattern: state.backgroundPattern,
+        location: state.location,
       }),
       skipHydration: true,
       storage: createJSONStorage(() => localStorage),
