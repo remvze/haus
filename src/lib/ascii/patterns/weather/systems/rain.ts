@@ -152,12 +152,12 @@ export class RainSystem implements WeatherSystem {
         ctx.fillText(chars.bg, gx * charW, gy * charH);
       } else {
         const isCyan = this.intensity === 'drizzle' || this.intensity === 'heavy';
-        ctx.fillStyle = isCyan ? 'rgb(100,200,220)' : 'rgb(200,200,210)';
+        ctx.fillStyle = isCyan ? 'rgb(120,160,175)' : 'rgb(180,180,190)';
         ctx.fillText(chars.fg, gx * charW, gy * charH);
       }
     }
 
-    ctx.fillStyle = 'rgb(150,180,200)';
+    ctx.fillStyle = 'rgb(140,155,170)';
     for (const splash of this.splashes) {
       if (splash.x < 0 || splash.x >= this.cols) continue;
       ctx.fillText(SPLASH_CHARS[splash.frame], splash.x * charW, splash.y * charH);

@@ -1,12 +1,12 @@
 import type { WeatherSystem } from '../types';
 
 const COLORS = [
-  'rgb(255,165,0)',
-  'rgb(218,165,32)',
-  'rgb(184,134,11)',
-  'rgb(205,92,92)',
-  'rgb(160,82,45)',
-  'rgb(139,69,19)',
+  'rgb(180,130,50)',
+  'rgb(165,135,55)',
+  'rgb(150,115,45)',
+  'rgb(160,90,75)',
+  'rgb(135,85,50)',
+  'rgb(120,70,30)',
 ] as const;
 
 const CHAR_PAIRS = [

@@ -77,13 +77,13 @@ export class FireflySystem implements WeatherSystem {
 
       if (brightness > 200) {
         ch = '*';
-        color = 'rgb(255,220,80)';
+        color = 'rgb(190,175,80)';
       } else if (brightness > 128) {
         ch = '.';
-        color = 'rgb(200,255,100)';
+        color = 'rgb(160,180,90)';
       } else {
         ch = '\u00B7';
-        color = 'rgb(150,200,80)';
+        color = 'rgb(130,160,75)';
       }
 
       ctx.fillStyle = color;

@@ -57,7 +57,7 @@ export class CanvasEngine {
   }
 
   private tick = (timestamp: number): void => {
-    // [AI] Cap dt to 100ms so a background tab returning doesn't cause a massive jump.
+    //  Cap dt to 100ms so a background tab returning doesn't cause a massive jump.
     const dt = Math.min(timestamp - this.lastTime, 100);
     this.lastTime = timestamp;
 

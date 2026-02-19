@@ -119,7 +119,7 @@ export class StarsSystem implements WeatherSystem {
     }
 
     for (const ss of this.shootingStars) {
-      ctx.fillStyle = 'rgb(230,230,255)';
+      ctx.fillStyle = 'rgb(200,200,220)';
       ctx.fillText('*', Math.floor(ss.x) * charW, Math.floor(ss.y) * charH);
 
       for (let i = 0; i < ss.trail.length; i++) {

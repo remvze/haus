@@ -15,6 +15,8 @@ import { FireflySystem } from './systems/fireflies';
 import { BirdSystem } from './systems/birds';
 import { LeavesSystem } from './systems/leaves';
 import { AirplaneSystem } from './systems/airplane';
+import { SceneSystem } from './systems/scene';
+import { SmokeSystem } from './systems/smoke';
 
 const POLL_INTERVAL = 15 * 60;
 const DEFAULT_WEATHER: WeatherData = {
@@ -37,9 +39,11 @@ export class WeatherPattern implements AsciiPattern {
   private pollTimer = 0;
   private initialFetchDone = false;
 
+  private scene: SystemEntry;
   private stars: SystemEntry;
   private moon: SystemEntry;
   private sun: SystemEntry;
+  private smoke: SystemEntry;
   private clouds: SystemEntry;
   private rain: SystemEntry;
   private snow: SystemEntry;
@@ -55,9 +59,11 @@ export class WeatherPattern implements AsciiPattern {
   constructor(location: Location | null) {
     this.service = location ? new WeatherService(location.lat, location.lng) : null;
 
+    this.scene = { system: new SceneSystem(), active: true };
     this.stars = { system: new StarsSystem(), active: true };
     this.moon = { system: new MoonSystem(), active: true };
     this.sun = { system: new SunSystem(), active: false };
+    this.smoke = { system: new SmokeSystem(), active: true };
     this.clouds = { system: new CloudSystem(), active: true };
     this.rain = { system: new RainSystem(), active: false };
     this.snow = { system: new SnowSystem(), active: false };
@@ -70,9 +76,11 @@ export class WeatherPattern implements AsciiPattern {
 
     // Render order: back to front
     this.allSystems = [
+      this.scene,
       this.stars,
       this.moon,
       this.sun,
+      this.smoke,
       this.clouds,
       this.birds,
       this.airplane,
@@ -150,9 +158,11 @@ export class WeatherPattern implements AsciiPattern {
     const hasRain = c === 'drizzle' || c === 'rain' || c === 'heavy-rain' || c === 'thunderstorm';
     const hasSnow = c === 'snow' || c === 'heavy-snow';
 
+    this.scene.active = true;
     this.stars.active = isNight;
     this.moon.active = isNight;
     this.sun.active = isDay && isClear;
+    this.smoke.active = !hasRain;
     this.birds.active = isDay && isClear;
     this.fireflies.active = isNight && isWarm && isClear;
     this.rain.active = hasRain;

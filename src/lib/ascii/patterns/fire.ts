@@ -8,17 +8,17 @@ export type FireCharset = 'classic' | 'blocks' | 'sparks';
 
 export interface FireConfig {
   charset: FireCharset;
-  decay: number;       // 0.5–3.0 — higher = shorter flames
+  decay: number; // 0.5–3.0 — higher = shorter flames
   embers: boolean;
-  fps: number;         // 10–60 — simulation ticks per second
-  intensity: number;   // 1–10 — fuel heat
+  fps: number; // 10–60 — simulation ticks per second
+  intensity: number; // 1–10 — fuel heat
   mode: FireMode;
   palette: FirePalette;
   pulse: boolean;
   sparks: boolean;
-  thickness: number;   // 1–5 — fuel row depth
-  turbulence: number;  // 1–10 — randomness in decay
-  wind: number;        // -5–+5 — horizontal drift bias
+  thickness: number; // 1–5 — fuel row depth
+  turbulence: number; // 1–10 — randomness in decay
+  wind: number; // -5–+5 — horizontal drift bias
 }
 
 export const DEFAULT_FIRE_CONFIG: FireConfig = {
@@ -39,28 +39,60 @@ export const DEFAULT_FIRE_CONFIG: FireConfig = {
 // --- palettes & charsets ---
 
 const PALETTES: Record<Exclude<FirePalette, 'mono'>, readonly string[]> = {
-  classic: [
-    '#000000', '#1a0a02', '#3d1206', '#5e1a08', '#8c2a08',
-    '#b84510', '#d86a18', '#f49922', '#ffc844', '#fff8dc',
-  ],
   blue: [
-    '#000000', '#020a1a', '#061a3d', '#0a2a5e', '#104080',
-    '#1860a8', '#2088d0', '#40b0f0', '#80d8ff', '#e0f8ff',
+    '#000000',
+    '#020a1a',
+    '#061a3d',
+    '#0a2a5e',
+    '#104080',
+    '#1860a8',
+    '#2088d0',
+    '#40b0f0',
+    '#80d8ff',
+    '#e0f8ff',
+  ],
+  classic: [
+    '#000000',
+    '#1a0a02',
+    '#3d1206',
+    '#5e1a08',
+    '#8c2a08',
+    '#b84510',
+    '#d86a18',
+    '#f49922',
+    '#ffc844',
+    '#fff8dc',
   ],
   lava: [
-    '#000000', '#1a0000', '#3d0404', '#600808', '#8a1010',
-    '#b82020', '#e04040', '#f08060', '#ffc0a0', '#ffffff',
+    '#000000',
+    '#1a0000',
+    '#3d0404',
+    '#600808',
+    '#8a1010',
+    '#b82020',
+    '#e04040',
+    '#f08060',
+    '#ffc0a0',
+    '#ffffff',
   ],
   matrix: [
-    '#000000', '#001a02', '#003d08', '#006010', '#008820',
-    '#10b030', '#30d850', '#60f080', '#a0ffb0', '#e0ffe8',
+    '#000000',
+    '#001a02',
+    '#003d08',
+    '#006010',
+    '#008820',
+    '#10b030',
+    '#30d850',
+    '#60f080',
+    '#a0ffb0',
+    '#e0ffe8',
   ],
 };
 
 const CHARSETS: Record<FireCharset, string> = {
+  blocks: ' ░▒▓█',
   classic: ' .:-=+*#%@',
-  blocks:  ' ░▒▓█',
-  sparks:  ' .,*+xX#%',
+  sparks: ' .,*+xX#%',
 };
 
 const MAX_EMBER_COUNT = 128;
@@ -85,7 +117,8 @@ interface FuelRegion {
 
 // --- helpers ---
 
-const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
+const clamp = (v: number, min: number, max: number) =>
+  Math.max(min, Math.min(max, v));
 
 const makePool = (max: number): ParticlePool => ({
   count: 0,
@@ -136,7 +169,8 @@ export class FirePattern implements AsciiPattern {
     this.accumulator += dt;
 
     while (this.accumulator >= intervalMs) {
-      if (this.config.pulse) this.pulsePhase += PULSE_SPEED * (intervalMs / 1000);
+      if (this.config.pulse)
+        this.pulsePhase += PULSE_SPEED * (intervalMs / 1000);
       this.tick();
       this.accumulator -= intervalMs;
     }
@@ -162,14 +196,19 @@ export class FirePattern implements AsciiPattern {
     const charset = CHARSETS[this.config.charset];
     const charLen = charset.length - 1;
     const isMono = this.config.palette === 'mono';
-    const palette = isMono ? null : PALETTES[this.config.palette as Exclude<FirePalette, 'mono'>];
+    const palette = isMono
+      ? null
+      : PALETTES[this.config.palette as Exclude<FirePalette, 'mono'>];
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const heat = this.heat[row * this.cols + col];
         if (heat < 0.5) continue;
 
-        const charIdx = Math.min(charLen, Math.floor(heat * charLen / 9 + 0.5));
+        const charIdx = Math.min(
+          charLen,
+          Math.floor((heat * charLen) / 9 + 0.5),
+        );
         const char = charset[charIdx];
         if (char === ' ') continue;
 
@@ -195,7 +234,7 @@ export class FirePattern implements AsciiPattern {
     this.noise = new Float32Array(n);
     for (let i = 0; i < n; i++) this.noise[i] = 0.3 * Math.random();
 
-    // [AI] 2 box-blur passes smooth the noise into organic patches
+    //  2 box-blur passes smooth the noise into organic patches
     const tmp = new Float32Array(n);
     for (let pass = 0; pass < 2; pass++) {
       for (let row = 0; row < this.rows; row++) {
@@ -227,15 +266,15 @@ export class FirePattern implements AsciiPattern {
     switch (this.config.mode) {
       case 'campfire': {
         const w = 0.3 * cols;
-        return [{ x: cols / 2 - w / 2, w }];
+        return [{ w, x: cols / 2 - w / 2 }];
       }
       case 'torch': {
         const count = Math.min(4, Math.max(3, Math.floor(cols / 25)));
         const spacing = cols / (count + 1);
         const w = Math.max(3, 0.06 * cols);
         return Array.from({ length: count }, (_, i) => ({
-          x: spacing * (i + 1) - w / 2,
           w,
+          x: spacing * (i + 1) - w / 2,
         }));
       }
       case 'candles': {
@@ -243,12 +282,12 @@ export class FirePattern implements AsciiPattern {
         const spacing = cols / (count + 1);
         const w = Math.max(2, 0.03 * cols);
         return Array.from({ length: count }, (_, i) => ({
-          x: spacing * (i + 1) - w / 2,
           w,
+          x: spacing * (i + 1) - w / 2,
         }));
       }
       default:
-        return [{ x: 0, w: cols }];
+        return [{ w: cols, x: 0 }];
     }
   }
 
@@ -269,7 +308,7 @@ export class FirePattern implements AsciiPattern {
   }
 
   private igniteFuelRows(): void {
-    const { intensity, thickness, pulse } = this.config;
+    const { intensity, pulse, thickness } = this.config;
     const regions = this.getFuelRegions();
     const pulseMultiplier = pulse ? 0.7 + 0.3 * Math.sin(this.pulsePhase) : 1;
     const safeThickness = Math.min(thickness, this.rows - 2);
@@ -297,12 +336,14 @@ export class FirePattern implements AsciiPattern {
 
   private flameSurges(): void {
     const regions = this.getFuelRegions();
-    const surgeChance = this.config.mode === 'wall' ? 1
-      : this.config.mode === 'campfire' ? 0.5
-      : 0.3;
-    const surgeCount = Math.random() < 0.5 * surgeChance
-      ? 1 + Math.floor(Math.random() * 4)
-      : 0;
+    const surgeChance =
+      this.config.mode === 'wall'
+        ? 1
+        : this.config.mode === 'campfire'
+          ? 0.5
+          : 0.3;
+    const surgeCount =
+      Math.random() < 0.5 * surgeChance ? 1 + Math.floor(Math.random() * 4) : 0;
 
     for (let s = 0; s < surgeCount; s++) {
       const region = regions[Math.floor(Math.random() * regions.length)];
@@ -320,7 +361,8 @@ export class FirePattern implements AsciiPattern {
           if (col < 0 || col >= this.cols) continue;
 
           const idx = row * this.cols + col;
-          const heatVal = maxHeat * (1 - (h / height) * 0.5) * (0.6 + 0.4 * Math.random());
+          const heatVal =
+            maxHeat * (1 - (h / height) * 0.5) * (0.6 + 0.4 * Math.random());
           this.heat[idx] = Math.max(this.heat[idx], heatVal);
         }
       }
@@ -328,7 +370,7 @@ export class FirePattern implements AsciiPattern {
   }
 
   private propagate(): void {
-    const { cols, rows, heat, noise, config } = this;
+    const { cols, config, heat, noise, rows } = this;
     const fuelBottom = rows - config.thickness;
     const n = cols * rows;
     const rowBuf = new Float32Array(cols);
@@ -343,29 +385,49 @@ export class FirePattern implements AsciiPattern {
         const below = row + 1;
         if (below >= rows) continue;
 
-        // [AI] Wind shifts source column lookup by wind × height factor
+        //  Wind shifts source column lookup by wind × height factor
         let srcCol = col;
         if (config.wind !== 0) {
-          const drift = config.wind * heightFactor * (0.5 + 0.3 * Math.random());
+          const drift =
+            config.wind * heightFactor * (0.5 + 0.3 * Math.random());
           srcCol = clamp(Math.round(col + drift), 0, cols - 1);
         }
 
-        // [AI] 5-neighbor weighted kernel: center 3, ±1 gets 2, ±2 gets 1, row+2 gets 1
+        //  5-neighbor weighted kernel: center 3, ±1 gets 2, ±2 gets 1, row+2 gets 1
         let sum = 0;
         let weight = 0;
 
-        sum += 3 * heat[below * cols + srcCol];       weight += 3;
-        if (srcCol > 0)       { sum += 2 * heat[below * cols + (srcCol - 1)]; weight += 2; }
-        if (srcCol < cols - 1) { sum += 2 * heat[below * cols + (srcCol + 1)]; weight += 2; }
-        if (srcCol > 1)       { sum += heat[below * cols + (srcCol - 2)];     weight += 1; }
-        if (srcCol < cols - 2) { sum += heat[below * cols + (srcCol + 2)];     weight += 1; }
-        if (below + 1 < rows) { sum += heat[(below + 1) * cols + srcCol];     weight += 1; }
+        sum += 3 * heat[below * cols + srcCol];
+        weight += 3;
+        if (srcCol > 0) {
+          sum += 2 * heat[below * cols + (srcCol - 1)];
+          weight += 2;
+        }
+        if (srcCol < cols - 1) {
+          sum += 2 * heat[below * cols + (srcCol + 1)];
+          weight += 2;
+        }
+        if (srcCol > 1) {
+          sum += heat[below * cols + (srcCol - 2)];
+          weight += 1;
+        }
+        if (srcCol < cols - 2) {
+          sum += heat[below * cols + (srcCol + 2)];
+          weight += 1;
+        }
+        if (below + 1 < rows) {
+          sum += heat[(below + 1) * cols + srcCol];
+          weight += 1;
+        }
 
         let h = sum / weight;
 
         const decayBase = 0.2 * config.decay;
-        const noiseIdx = ((row + Math.floor(10 * this.noiseScroll)) % rows) * cols + col;
-        h -= decayBase * (0.6 + noise[Math.abs(noiseIdx) % n] + 0.4 * Math.random());
+        const noiseIdx =
+          ((row + Math.floor(10 * this.noiseScroll)) % rows) * cols + col;
+        h -=
+          decayBase *
+          (0.6 + noise[Math.abs(noiseIdx) % n] + 0.4 * Math.random());
 
         h += (Math.random() - 0.5) * heightFactor * config.turbulence * 0.12;
 
@@ -379,7 +441,7 @@ export class FirePattern implements AsciiPattern {
   }
 
   private horizontalSmooth(): void {
-    const { cols, rows, heat } = this;
+    const { cols, heat, rows } = this;
     const start = Math.max(0, rows - 8);
 
     for (let row = start; row < rows - 1; row++) {
@@ -393,7 +455,7 @@ export class FirePattern implements AsciiPattern {
   // --- embers (SoA) ---
 
   private spawnEmber(): void {
-    const { embers, config, rows } = this;
+    const { config, embers, rows } = this;
     if (embers.count >= MAX_EMBER_COUNT || rows < 3) return;
 
     const regions = this.getFuelRegions();
@@ -410,7 +472,7 @@ export class FirePattern implements AsciiPattern {
   }
 
   private updateEmbers(dtSec: number): void {
-    const { embers, config, cols } = this;
+    const { cols, config, embers } = this;
     if (embers.count === 0) return;
 
     let alive = 0;
@@ -429,7 +491,7 @@ export class FirePattern implements AsciiPattern {
 
       if (embers.y[i] < 0 || embers.x[i] < 0 || embers.x[i] >= cols) continue;
 
-      // [AI] Compact-remove: swap live entries to front, no .filter() allocation
+      //  Compact-remove: swap live entries to front, no .filter() allocation
       if (alive !== i) {
         embers.x[alive] = embers.x[i];
         embers.y[alive] = embers.y[i];
@@ -449,9 +511,11 @@ export class FirePattern implements AsciiPattern {
     charW: number,
     charH: number,
   ): void {
-    const { embers, config } = this;
+    const { config, embers } = this;
     const isMono = config.palette === 'mono';
-    const palette = isMono ? null : PALETTES[config.palette as Exclude<FirePalette, 'mono'>];
+    const palette = isMono
+      ? null
+      : PALETTES[config.palette as Exclude<FirePalette, 'mono'>];
 
     for (let i = 0; i < embers.count; i++) {
       const col = Math.floor(embers.x[i]);
@@ -472,7 +536,7 @@ export class FirePattern implements AsciiPattern {
   // --- sparks (SoA) ---
 
   private spawnSparks(): void {
-    const { sparks, config, rows } = this;
+    const { config, rows, sparks } = this;
     if (sparks.count >= MAX_SPARK_COUNT || rows < 3) return;
 
     const regions = this.getFuelRegions();
@@ -492,7 +556,7 @@ export class FirePattern implements AsciiPattern {
   }
 
   private updateSparks(dtSec: number): void {
-    const { sparks, config, cols } = this;
+    const { cols, config, sparks } = this;
     if (sparks.count === 0) return;
 
     let alive = 0;
@@ -526,9 +590,11 @@ export class FirePattern implements AsciiPattern {
     charW: number,
     charH: number,
   ): void {
-    const { sparks, config } = this;
+    const { config, sparks } = this;
     const isMono = config.palette === 'mono';
-    const palette = isMono ? null : PALETTES[config.palette as Exclude<FirePalette, 'mono'>];
+    const palette = isMono
+      ? null
+      : PALETTES[config.palette as Exclude<FirePalette, 'mono'>];
 
     for (let i = 0; i < sparks.count; i++) {
       const col = Math.floor(sparks.x[i]);

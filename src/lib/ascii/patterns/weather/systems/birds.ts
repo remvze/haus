@@ -59,7 +59,7 @@ export class BirdSystem implements WeatherSystem {
     charW: number,
     charH: number,
   ): void {
-    ctx.fillStyle = 'rgb(200,180,60)';
+    ctx.fillStyle = 'rgb(150,140,70)';
     for (const b of this.birds) {
       const gx = Math.floor(b.x);
       const gy = Math.floor(b.y);

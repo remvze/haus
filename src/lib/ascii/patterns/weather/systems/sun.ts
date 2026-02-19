@@ -71,7 +71,7 @@ export class SunSystem implements WeatherSystem {
         const gy = this.posY + row;
         if (gx < 0 || gx >= this.cols || gy < 0 || gy >= this.rows) continue;
 
-        ctx.fillStyle = 'rgb(255,220,80)';
+        ctx.fillStyle = 'rgb(200,180,80)';
         ctx.fillText(ch, gx * charW, gy * charH);
       }
     }

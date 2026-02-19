@@ -11,12 +11,12 @@ const SPRITE = [
 ];
 
 const SPRITE_COLORS: Record<string, string> = {
-  '"': 'rgb(100,200,220)',
-  '\\': 'rgb(80,120,200)',
+  '"': 'rgb(120,155,165)',
+  '\\': 'rgb(90,110,150)',
   '_': 'rgb(100,100,110)',
-  '~': 'rgb(140,140,150)',
+  '~': 'rgb(130,130,140)',
 };
-const DEFAULT_COLOR = 'rgb(200,200,210)';
+const DEFAULT_COLOR = 'rgb(170,170,180)';
 
 const SPAWN_CHANCE = 0.0005;
 const COOLDOWN = 30;
