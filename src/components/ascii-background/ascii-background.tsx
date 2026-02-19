@@ -21,7 +21,18 @@ export function AsciiBackground({ pattern }: Props) {
     engineRef.current = engine;
     engine.start();
 
-    return () => engine.stop();
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (width > 0 && height > 0) {
+        engine.resize(width, height);
+      }
+    });
+    observer.observe(canvas);
+
+    return () => {
+      observer.disconnect();
+      engine.stop();
+    };
   }, []);
 
   useEffect(() => {

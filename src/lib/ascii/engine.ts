@@ -32,6 +32,18 @@ export class CanvasEngine {
     this.pattern = pattern;
   }
 
+  resize(width: number, height: number): void {
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.applyFont();
+
+    if (this.pattern) {
+      const cols = Math.floor(width / this.charW);
+      const rows = Math.floor(height / this.charH);
+      this.pattern.init(cols, rows);
+    }
+  }
+
   start(): void {
     this.animFrameId = requestAnimationFrame(this.tick);
   }
