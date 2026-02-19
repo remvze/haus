@@ -12,6 +12,7 @@ import { Breathing } from '../tools/breathing';
 import { Ambient } from '../tools/ambient/ambient';
 import { Timers } from '../tools/timers';
 import { Lofi } from '../tools/lofi';
+import { Background } from '../background';
 import { Settings } from '../settings';
 import { SnackbarProvider } from '@/contexts/snackbar';
 
@@ -52,6 +53,8 @@ export function App() {
       <SnackbarProvider>
         <WindowsProvider>
           <div className={styles.app}>
+            <Background />
+
             <Toolbox
               minimizedApps={minimizedApps}
               openApp={openApp}
@@ -98,10 +101,7 @@ export function App() {
               onMinimize={() => minimizeApp('lofi')}
             />
 
-            <Settings
-              isOpen={isAppOpen('settings')}
-              onClose={() => closeApp('settings')}
-            />
+            <Settings />
           </div>
         </WindowsProvider>
       </SnackbarProvider>

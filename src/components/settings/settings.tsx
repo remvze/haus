@@ -1,55 +1,127 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { IoSettingsSharp } from 'react-icons/io5';
 
-import { useSettings } from '@/stores/settings';
-import { Modal } from '../modal';
+import { type BackgroundPattern, useSettings } from '@/stores/settings';
+import { Portal } from '@/components/portal';
 
 import styles from './settings.module.css';
 
-interface SettingsProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+const PATTERN_OPTIONS: Array<{ label: string; value: BackgroundPattern }> = [
+  { label: 'Dot Grid', value: 'dots' },
+  { label: 'Grid Lines', value: 'grid' },
+  { label: 'None', value: 'none' },
+];
 
-export function Settings({ isOpen, onClose }: SettingsProps) {
-  const volume = useSettings(state => state.alarmVolume);
-  const setVolume = useSettings(state => state.setAlarmVolume);
+export const Settings = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
-  const [value, setValue] = useState(0.5);
+  const alarmVolume = useSettings(s => s.alarmVolume);
+  const setAlarmVolume = useSettings(s => s.setAlarmVolume);
+  const backgroundPattern = useSettings(s => s.backgroundPattern);
+  const setBackgroundPattern = useSettings(s => s.setBackgroundPattern);
+  const backgroundOpacity = useSettings(s => s.backgroundOpacity);
+  const setBackgroundOpacity = useSettings(s => s.setBackgroundOpacity);
+
+  const close = useCallback(() => setIsOpen(false), []);
 
   useEffect(() => {
-    setValue(volume);
-  }, [volume, isOpen]);
+    if (!isOpen) return;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
 
-    setVolume(value);
-    onClose();
-  };
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (
+        panelRef.current?.contains(target) ||
+        triggerRef.current?.contains(target)
+      )
+        return;
+
+      close();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, close]);
 
   return (
-    <Modal show={isOpen} onClose={onClose}>
-      <div className={styles.settings}>
-        <h2>Haus Settings</h2>
+    <Portal>
+      <button
+        ref={triggerRef}
+        className={styles.trigger}
+        onClick={() => setIsOpen(prev => !prev)}
+      >
+        <IoSettingsSharp size={18} />
+      </button>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.alarmVolume}>
-            <label htmlFor="volume">Alarm Volume</label>
-            <input
-              max={1}
-              min={0}
-              step={0.1}
-              type="range"
-              value={value}
-              onChange={e => setValue(+e.target.value)}
-            />
-          </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            ref={panelRef}
+            animate={{ opacity: 1, y: 0 }}
+            className={styles.panel}
+            exit={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.15 }}
+          >
+            <h3 className={styles.title}>Settings</h3>
 
-          <div className={styles.buttons}>
-            <button type="submit">Save</button>
-          </div>
-        </form>
-      </div>
-    </Modal>
+            <div className={styles.field}>
+              <label htmlFor="bg-pattern">Background Pattern</label>
+              <select
+                id="bg-pattern"
+                value={backgroundPattern}
+                onChange={e =>
+                  setBackgroundPattern(e.target.value as BackgroundPattern)
+                }
+              >
+                {PATTERN_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.field}>
+              <label htmlFor="bg-opacity">Background Opacity</label>
+              <input
+                id="bg-opacity"
+                max={1}
+                min={0}
+                step={0.05}
+                type="range"
+                value={backgroundOpacity}
+                onChange={e => setBackgroundOpacity(+e.target.value)}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label htmlFor="alarm-volume">Alarm Volume</label>
+              <input
+                id="alarm-volume"
+                max={1}
+                min={0}
+                step={0.1}
+                type="range"
+                value={alarmVolume}
+                onChange={e => setAlarmVolume(+e.target.value)}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </Portal>
   );
-}
+};
