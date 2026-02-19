@@ -11,7 +11,7 @@ const OCTAVES = 3;
 const PERSISTENCE = 0.5;
 const LACUNARITY = 2.0;
 
-const FALLOFF_EXPONENT = 1.5;
+const FALLOFF_EXPONENT = 4.0;
 
 const AURORA_STOPS: [number, number, number][] = [
   [20, 0, 40],
@@ -38,7 +38,7 @@ const DEFAULT_AURORA_CONFIG: AuroraConfig = {
   palette: 'aurora',
   scaleX: 0.03,
   scaleY: 0.08,
-  speed: 0.4,
+  speed: 0.15,
   threshold: 0.3,
 };
 
