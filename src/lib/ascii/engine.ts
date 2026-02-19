@@ -15,9 +15,6 @@ export class CanvasEngine {
     if (!ctx) throw new Error('Could not get 2D canvas context');
     this.ctx = ctx;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
     this.applyFont();
     const m = this.ctx.measureText('M');
     this.charW = m.width;
@@ -45,10 +42,12 @@ export class CanvasEngine {
   }
 
   start(): void {
+    document.addEventListener('visibilitychange', this.onVisibilityChange);
     this.animFrameId = requestAnimationFrame(this.tick);
   }
 
   stop(): void {
+    document.removeEventListener('visibilitychange', this.onVisibilityChange);
     if (this.animFrameId !== null) cancelAnimationFrame(this.animFrameId);
   }
 
@@ -56,9 +55,12 @@ export class CanvasEngine {
     this.ctx.font = FONT;
   }
 
+  private onVisibilityChange = (): void => {
+    if (!document.hidden) this.lastTime = 0;
+  };
+
   private tick = (timestamp: number): void => {
-    //  Cap dt to 100ms so a background tab returning doesn't cause a massive jump.
-    const dt = Math.min(timestamp - this.lastTime, 100);
+    const dt = this.lastTime === 0 ? 0 : Math.min(timestamp - this.lastTime, 100);
     this.lastTime = timestamp;
 
     this.pattern?.update(dt);

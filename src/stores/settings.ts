@@ -18,12 +18,14 @@ export interface Location {
 
 interface State {
   alarmVolume: number;
+  backgroundOpacity: number;
   backgroundPattern: PatternId;
   location: Location | null;
 }
 
 interface Actions {
   setAlarmVolume: (volume: number) => void;
+  setBackgroundOpacity: (opacity: number) => void;
   setBackgroundPattern: (pattern: PatternId) => void;
   setLocation: (location: Location | null) => void;
 }
@@ -32,11 +34,16 @@ export const useSettings = create<State & Actions>()(
   persist(
     set => ({
       alarmVolume: 0.5,
+      backgroundOpacity: 1,
       backgroundPattern: 'fire',
       location: null,
 
       setAlarmVolume(volume) {
         set({ alarmVolume: volume });
+      },
+
+      setBackgroundOpacity(opacity) {
+        set({ backgroundOpacity: opacity });
       },
 
       setBackgroundPattern(pattern) {
@@ -53,7 +60,8 @@ export const useSettings = create<State & Actions>()(
           return {
             ...(persisted as State),
             backgroundOpacity: 1,
-            backgroundPattern: 'dots' as BackgroundPattern,
+            backgroundPattern: 'fire' as PatternId,
+            location: null,
           };
         }
 
@@ -62,6 +70,7 @@ export const useSettings = create<State & Actions>()(
       name: 'haus:store:settings',
       partialize: state => ({
         alarmVolume: state.alarmVolume,
+        backgroundOpacity: state.backgroundOpacity,
         backgroundPattern: state.backgroundPattern,
         location: state.location,
       }),

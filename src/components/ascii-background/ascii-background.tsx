@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { CanvasEngine } from '@/lib/ascii/engine';
 import type { AsciiPattern } from '@/lib/ascii/types';
+import { useSettings } from '@/stores/settings';
 
 import styles from './ascii-background.module.css';
 
@@ -12,6 +13,7 @@ interface Props {
 export function AsciiBackground({ pattern }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<CanvasEngine | null>(null);
+  const backgroundOpacity = useSettings(s => s.backgroundOpacity);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -39,5 +41,5 @@ export function AsciiBackground({ pattern }: Props) {
     engineRef.current?.setPattern(pattern);
   }, [pattern]);
 
-  return <canvas className={styles.canvas} ref={canvasRef} />;
+  return <canvas className={styles.canvas} ref={canvasRef} style={{ opacity: backgroundOpacity }} />;
 }

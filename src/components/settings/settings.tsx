@@ -1,12 +1,14 @@
-import { useWindowState } from '@/contexts/window-state';
-import { useSettings } from '@/stores/settings';
-import type { Location, PatternId } from '@/stores/settings';
-import { useCallback, useEffect, useState } from 'react';
-import { Modal } from '../modal';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { IoSettingsSharp } from 'react-icons/io5';
+
+import { type PatternId, useSettings } from '@/stores/settings';
+import type { Location } from '@/stores/settings';
+import { Portal } from '@/components/portal';
 
 import styles from './settings.module.css';
 
-const PATTERN_OPTIONS: { label: string; value: PatternId }[] = [
+const PATTERN_OPTIONS: Array<{ label: string; value: PatternId }> = [
   { label: 'Fire', value: 'fire' },
   { label: 'Rain', value: 'rain' },
   { label: 'Bonsai', value: 'bonsai' },
@@ -32,27 +34,54 @@ const geocodeCity = async (query: string): Promise<Location | null> => {
   };
 };
 
-export function Settings() {
-  const { isOpen, onClose } = useWindowState('settings');
-  const volume = useSettings(s => s.alarmVolume);
-  const setVolume = useSettings(s => s.setAlarmVolume);
-  const pattern = useSettings(s => s.backgroundPattern);
-  const setPattern = useSettings(s => s.setBackgroundPattern);
+export const Settings = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const alarmVolume = useSettings(s => s.alarmVolume);
+  const setAlarmVolume = useSettings(s => s.setAlarmVolume);
+  const backgroundOpacity = useSettings(s => s.backgroundOpacity);
+  const setBackgroundOpacity = useSettings(s => s.setBackgroundOpacity);
+  const backgroundPattern = useSettings(s => s.backgroundPattern);
+  const setBackgroundPattern = useSettings(s => s.setBackgroundPattern);
   const location = useSettings(s => s.location);
   const setLocation = useSettings(s => s.setLocation);
 
-  const [volumeValue, setVolumeValue] = useState(0.5);
-  const [patternValue, setPatternValue] = useState<PatternId>('fire');
-  const [cityInput, setCityInput] = useState('');
-  const [locationValue, setLocationValue] = useState<Location | null>(null);
+  const [cityInput, setCityInput] = useState(location?.name ?? '');
   const [geocoding, setGeocoding] = useState(false);
 
+  const close = useCallback(() => setIsOpen(false), []);
+
   useEffect(() => {
-    setVolumeValue(volume);
-    setPatternValue(pattern);
-    setLocationValue(location);
+    if (!isOpen) return;
+
     setCityInput(location?.name ?? '');
-  }, [volume, pattern, location, isOpen]);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (
+        panelRef.current?.contains(target) ||
+        triggerRef.current?.contains(target)
+      )
+        return;
+
+      close();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, close, location]);
 
   const handleGeocode = useCallback(async () => {
     if (!cityInput.trim()) return;
@@ -62,10 +91,10 @@ export function Settings() {
     setGeocoding(false);
 
     if (result) {
-      setLocationValue(result);
+      setLocation(result);
       setCityInput(result.name);
     }
-  }, [cityInput]);
+  }, [cityInput, setLocation]);
 
   const handleUseMyLocation = useCallback(() => {
     if (!navigator.geolocation) return;
@@ -77,115 +106,147 @@ export function Settings() {
           lng: pos.coords.longitude,
           name: `${pos.coords.latitude.toFixed(2)}°, ${pos.coords.longitude.toFixed(2)}°`,
         };
-        setLocationValue(loc);
+        setLocation(loc);
         setCityInput(loc.name);
       },
       () => {},
     );
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    setVolume(volumeValue);
-    setPattern(patternValue);
-    setLocation(patternValue === 'weather' ? locationValue : location);
-    onClose();
-  };
+  }, [setLocation]);
 
   return (
-    <Modal show={isOpen} onClose={onClose}>
-      <div className={styles.settings}>
-        <h2>Haus Settings</h2>
+    <Portal>
+      <button
+        ref={triggerRef}
+        className={styles.trigger}
+        onClick={() => setIsOpen(prev => !prev)}
+      >
+        <IoSettingsSharp size={18} />
+      </button>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.field}>
-            <label htmlFor="pattern">Background</label>
-            <select
-              id="pattern"
-              value={patternValue}
-              onChange={e => setPatternValue(e.target.value as PatternId)}
-            >
-              {PATTERN_OPTIONS.map(opt => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            ref={panelRef}
+            animate={{ opacity: 1, y: 0 }}
+            className={styles.panel}
+            exit={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.15 }}
+          >
+            <h3 className={styles.title}>Settings</h3>
 
-          {patternValue === 'weather' && (
             <div className={styles.field}>
-              <label htmlFor="location">Location</label>
-              <div className={styles.locationRow}>
-                <input
-                  id="location"
-                  placeholder="Enter city name..."
-                  type="text"
-                  value={cityInput}
-                  onChange={e => setCityInput(e.target.value)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleGeocode();
-                    }
-                  }}
-                />
-                <button
-                  disabled={geocoding || !cityInput.trim()}
-                  type="button"
-                  onClick={handleGeocode}
-                >
-                  {geocoding ? '...' : 'Search'}
-                </button>
-              </div>
-              <button
-                className={styles.useLocation}
-                type="button"
-                onClick={handleUseMyLocation}
+              <label htmlFor="bg-pattern">Background</label>
+              <select
+                id="bg-pattern"
+                value={backgroundPattern}
+                onChange={e =>
+                  setBackgroundPattern(e.target.value as PatternId)
+                }
               >
-                Use my location
-              </button>
-              {locationValue && (
-                <span className={styles.locationInfo}>
-                  {locationValue.name} ({locationValue.lat.toFixed(2)}°,{' '}
-                  {locationValue.lng.toFixed(2)}°)
-                </span>
-              )}
+                {PATTERN_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
 
-          <div className={styles.field}>
-            <label htmlFor="volume">Alarm Volume</label>
-            <input
-              id="volume"
-              max={1}
-              min={0}
-              step={0.1}
-              type="range"
-              value={volumeValue}
-              onChange={e => setVolumeValue(+e.target.value)}
-            />
-          </div>
+            {backgroundPattern === 'weather' && (
+              <div className={styles.field}>
+                <label htmlFor="location">Location</label>
+                <div className={styles.locationRow}>
+                  <input
+                    id="location"
+                    placeholder="Enter city name..."
+                    type="text"
+                    value={cityInput}
+                    onChange={e => setCityInput(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleGeocode();
+                      }
+                    }}
+                  />
+                  <button
+                    disabled={geocoding || !cityInput.trim()}
+                    type="button"
+                    onClick={handleGeocode}
+                  >
+                    {geocoding ? '...' : 'Search'}
+                  </button>
+                </div>
+                <button
+                  className={styles.useLocation}
+                  type="button"
+                  onClick={handleUseMyLocation}
+                >
+                  Use my location
+                </button>
+                {location && (
+                  <span className={styles.locationInfo}>
+                    {location.name} ({location.lat.toFixed(2)}°,{' '}
+                    {location.lng.toFixed(2)}°)
+                  </span>
+                )}
+              </div>
+            )}
 
-          {patternValue === 'weather' && (
-            <p className={styles.credit}>
-              Live Weather inspired by{' '}
-              <a
-                href="https://github.com/veirt/weathr"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                weathr
-              </a>
-            </p>
-          )}
+            <div className={styles.field}>
+              <label htmlFor="bg-opacity">Background Opacity</label>
+              <input
+                id="bg-opacity"
+                max={1}
+                min={0}
+                step={0.05}
+                type="range"
+                value={backgroundOpacity}
+                onChange={e => setBackgroundOpacity(+e.target.value)}
+              />
+            </div>
 
-          <div className={styles.buttons}>
-            <button type="submit">Save</button>
-          </div>
-        </form>
-      </div>
-    </Modal>
+            <div className={styles.field}>
+              <label htmlFor="alarm-volume">Alarm Volume</label>
+              <input
+                id="alarm-volume"
+                max={1}
+                min={0}
+                step={0.1}
+                type="range"
+                value={alarmVolume}
+                onChange={e => setAlarmVolume(+e.target.value)}
+              />
+            </div>
+
+            {backgroundPattern === 'weather' && (
+              <p className={styles.credit}>
+                Live Weather inspired by{' '}
+                <a
+                  href="https://github.com/veirt/weathr"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  weathr
+                </a>
+              </p>
+            )}
+
+            {backgroundPattern === 'bonsai' && (
+              <p className={styles.credit}>
+                Bonsai inspired by{' '}
+                <a
+                  href="https://gitlab.com/jallbrit/cbonsai"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  cbonsai
+                </a>
+              </p>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </Portal>
   );
-}
+};
