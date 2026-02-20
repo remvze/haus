@@ -2,6 +2,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 import { Window } from '@/components/window';
 import { Timer } from './timer';
+import { useWindowState } from '@/contexts/window-state';
 
 import { useTimers } from './timers.store';
 
@@ -31,19 +32,9 @@ export function TimersContent() {
   );
 }
 
-interface TimersProps {
-  isMinimized: boolean;
-  isOpen: boolean;
-  onClose: () => void;
-  onMinimize: () => void;
-}
+export function Timers() {
+  const { isOpen, isMinimized, onClose, onMinimize } = useWindowState('timers');
 
-export function Timers({
-  isMinimized,
-  isOpen,
-  onClose,
-  onMinimize,
-}: TimersProps) {
   return (
     <Window
       contained

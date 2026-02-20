@@ -1,43 +1,139 @@
-.settings {
-  & h2 {
-    margin-bottom: 24px;
-    font-weight: 500;
+.trigger {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9997;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--color-foreground-subtle);
+  cursor: pointer;
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 50%;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--color-foreground);
+  }
+}
+
+.panel {
+  position: fixed;
+  right: 20px;
+  bottom: 68px;
+  z-index: 9997;
+  width: 280px;
+  padding: 16px;
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+}
+
+.title {
+  margin-bottom: 16px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+}
+
+.field {
+  & + & {
+    margin-top: 14px;
   }
 
-  & .form {
-    & .alarmVolume {
-      & label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: var(--font-sm);
-        font-weight: 500;
-      }
+  & label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: var(--font-xsm);
+    font-weight: 500;
+    color: var(--color-foreground-subtle);
+  }
 
-      & input[type='range'] {
-        width: 100%;
-        min-width: 0;
-      }
+  & select {
+    width: 100%;
+    height: 32px;
+    padding: 0 8px;
+    font-size: var(--font-xsm);
+    color: var(--color-foreground);
+    background: var(--color-neutral-50);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 4px;
+  }
+
+  & input[type='text'] {
+    width: 100%;
+    height: 32px;
+    padding: 0 8px;
+    font-size: var(--font-xsm);
+    color: var(--color-foreground);
+    background: var(--color-neutral-50);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 4px;
+  }
+
+  & input[type='range'] {
+    width: 100%;
+  }
+}
+
+.locationRow {
+  display: flex;
+  gap: 6px;
+
+  & input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  & button {
+    height: 32px;
+    padding: 0 10px;
+    font-size: var(--font-xsm);
+    cursor: pointer;
+    color: var(--color-foreground);
+    background: var(--color-neutral-50);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 4px;
+    white-space: nowrap;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
     }
+  }
+}
 
-    & .buttons {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      margin-top: 24px;
+.useLocation {
+  margin-top: 6px;
+  padding: 0;
+  font-size: var(--font-xsm);
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--color-foreground-subtle);
+  text-decoration: underline;
 
-      & button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
-        padding: 0 20px;
-        font-size: var(--font-sm);
-        font-weight: 500;
-        cursor: pointer;
-        background: var(--color-neutral-950);
-        border: none;
-        border-radius: 0;
-      }
-    }
+  &:hover {
+    color: var(--color-foreground);
+  }
+}
+
+.locationInfo {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--font-xsm);
+  color: var(--color-foreground-subtle);
+}
+
+.credit {
+  margin-top: 14px;
+  font-size: var(--font-xsm);
+  color: var(--color-foreground-subtle);
+
+  & a {
+    color: var(--color-foreground);
+    text-decoration: underline;
   }
 }

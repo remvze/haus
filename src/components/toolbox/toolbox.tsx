@@ -3,12 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import styles from './toolbox.module.css';
 import { cn } from '@/helpers/styles';
 import { AnimatePresence, motion } from 'motion/react';
-
-interface ToolboxProps {
-  minimizedApps: Array<string>;
-  openApp: (app: string) => void;
-  openApps: Array<string>;
-}
+import { useWindowStateContext } from '@/contexts/window-state';
 
 const apps: Record<string, string> = {
   ambient: 'Ambient Sounds',
@@ -16,12 +11,12 @@ const apps: Record<string, string> = {
   lofi: 'Lofi Music',
   notepad: 'Notepad',
   pomodoro: 'Pomodoro Timer',
-  settings: 'Settings',
   timers: 'Countdown Timers',
   todo: 'To-do Checklist',
 };
 
-export function Toolbox({ minimizedApps, openApp, openApps }: ToolboxProps) {
+export function Toolbox() {
+  const { minimizedApps, openApp, openApps } = useWindowStateContext();
   const [selected, setSelected] = useState(Object.keys(apps)[0]);
 
   const notOpenApps = useMemo(

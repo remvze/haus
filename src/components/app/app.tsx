@@ -1,108 +1,82 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 
-import { Toolbox } from '../toolbox';
-import { Notepad } from '../tools/notepad';
-import { Todo } from '../tools/todo';
-import { WindowsProvider } from '@/contexts/windows';
-import { StoreConsumer } from '../store-consumer';
-
-import { useLocalStorage } from '@/hooks/use-local-storage';
-import { Pomodoro } from '../tools/pomodoro';
-import { Breathing } from '../tools/breathing';
-import { Ambient } from '../tools/ambient/ambient';
-import { Timers } from '../tools/timers';
-import { Lofi } from '../tools/lofi';
-import { Settings } from '../settings';
 import { SnackbarProvider } from '@/contexts/snackbar';
-
+import { WindowsProvider } from '@/contexts/windows';
+import type { AsciiPattern } from '@/lib/ascii/types';
+import { FirePattern } from '@/lib/ascii/patterns/fire';
+import { RainPattern } from '@/lib/ascii/patterns/rain';
+import { BonsaiPattern } from '@/lib/ascii/patterns/bonsai';
+import { SnowPattern } from '@/lib/ascii/patterns/snow';
+import { WavePattern } from '@/lib/ascii/patterns/waves';
+import { AuroraPattern } from '@/lib/ascii/patterns/aurora';
+import { WeatherPattern } from '@/lib/ascii/patterns/weather/weather-pattern';
+import { useSettings } from '@/stores/settings';
+import type { PatternId, Location } from '@/stores/settings';
+import { AsciiBackground } from '../ascii-background/ascii-background';
+import { Settings } from '../settings';
+import { StoreConsumer } from '../store-consumer';
+import { Toolbox } from '../toolbox';
+import { Ambient } from '../tools/ambient/ambient';
+import { Breathing } from '../tools/breathing';
+import { Lofi } from '../tools/lofi';
+import { Notepad } from '../tools/notepad';
+import { Pomodoro } from '../tools/pomodoro';
+import { Timers } from '../tools/timers';
+import { Todo } from '../tools/todo';
 import styles from './app.module.css';
 
-export function App() {
-  const [openApps, setOpenApps] = useLocalStorage<Array<string>>(
-    'haus:open-windows',
-    [],
+const createPattern = (id: PatternId, location: Location | null): AsciiPattern => {
+  switch (id) {
+    case 'fire': return new FirePattern({});
+    case 'rain': return new RainPattern();
+    case 'bonsai': return new BonsaiPattern({});
+    case 'snow': return new SnowPattern({});
+    case 'waves': return new WavePattern({});
+    case 'aurora': return new AuroraPattern({});
+    case 'weather': return new WeatherPattern(location);
+    default: return new FirePattern({});
+  }
+};
+
+function AppContent() {
+  const patternId = useSettings(s => s.backgroundPattern);
+  const location = useSettings(s => s.location);
+
+  const pattern = useMemo(
+    () => createPattern(patternId, location),
+    [patternId, location],
   );
-  const [minimizedApps, setMinimizedApps] = useState<Array<string>>([]);
 
-  const isAppOpen = (app: string) => {
-    return openApps.some(a => a === app);
-  };
+  return (
+    <div className={styles.app}>
+      <AsciiBackground pattern={pattern} />
+      <Toolbox />
 
-  const isAppMinimized = (app: string) => {
-    return minimizedApps.some(a => a === app);
-  };
+      <Notepad />
 
-  const openApp = (app: string) => {
-    if (isAppOpen(app) && !isAppMinimized(app)) return;
+      <Todo />
 
-    setOpenApps(prev => [...prev, app]);
-    setMinimizedApps(prev => prev.filter(a => a !== app).filter(Boolean));
-  };
+      <Pomodoro />
 
-  const closeApp = (app: string) => {
-    setOpenApps(prev => prev.filter(a => a !== app).filter(Boolean));
-  };
+      <Breathing />
 
-  const minimizeApp = (app: string) => {
-    setMinimizedApps(prev => [...prev, app]);
-  };
+      <Ambient />
 
+      <Timers />
+
+      <Lofi />
+
+      <Settings />
+    </div>
+  );
+}
+
+export function App() {
   return (
     <StoreConsumer>
       <SnackbarProvider>
         <WindowsProvider>
-          <div className={styles.app}>
-            <Toolbox
-              minimizedApps={minimizedApps}
-              openApp={openApp}
-              openApps={openApps}
-            />
-
-            <Notepad
-              isOpen={isAppOpen('notepad')}
-              onClose={() => closeApp('notepad')}
-            />
-
-            <Todo isOpen={isAppOpen('todo')} onClose={() => closeApp('todo')} />
-
-            <Pomodoro
-              isMinimized={isAppMinimized('pomodoro')}
-              isOpen={isAppOpen('pomodoro')}
-              onClose={() => closeApp('pomodoro')}
-              onMinimize={() => minimizeApp('pomodoro')}
-            />
-
-            <Breathing
-              isOpen={isAppOpen('breathing')}
-              onClose={() => closeApp('breathing')}
-            />
-
-            <Ambient
-              isMinimized={isAppMinimized('ambient')}
-              isOpen={isAppOpen('ambient')}
-              onClose={() => closeApp('ambient')}
-              onMinimize={() => minimizeApp('ambient')}
-            />
-
-            <Timers
-              isMinimized={isAppMinimized('timers')}
-              isOpen={isAppOpen('timers')}
-              onClose={() => closeApp('timers')}
-              onMinimize={() => minimizeApp('timers')}
-            />
-
-            <Lofi
-              isMinimized={isAppMinimized('lofi')}
-              isOpen={isAppOpen('lofi')}
-              onClose={() => closeApp('lofi')}
-              onMinimize={() => minimizeApp('lofi')}
-            />
-
-            <Settings
-              isOpen={isAppOpen('settings')}
-              onClose={() => closeApp('settings')}
-            />
-          </div>
+          <AppContent />
         </WindowsProvider>
       </SnackbarProvider>
     </StoreConsumer>
