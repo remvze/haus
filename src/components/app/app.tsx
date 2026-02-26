@@ -16,6 +16,7 @@ import { Settings } from '../settings';
 import { SnackbarProvider } from '@/contexts/snackbar';
 
 import styles from './app.module.css';
+import { SomaFM } from '../tools/somafm';
 
 export function App() {
   const [openApps, setOpenApps] = useLocalStorage<Array<string>>(
@@ -96,6 +97,13 @@ export function App() {
               isOpen={isAppOpen('lofi')}
               onClose={() => closeApp('lofi')}
               onMinimize={() => minimizeApp('lofi')}
+            />
+
+            <SomaFM
+              isMinimized={isAppMinimized('somafm')}
+              isOpen={isAppOpen('somafm')}
+              onClose={() => closeApp('somafm')}
+              onMinimize={() => minimizeApp('somafm')}
             />
 
             <Settings
