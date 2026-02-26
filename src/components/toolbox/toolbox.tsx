@@ -16,6 +16,7 @@ const apps: Record<string, string> = {
   lofi: 'Lofi Music',
   notepad: 'Notepad',
   pomodoro: 'Pomodoro Timer',
+  somafm: 'SomaFM Radio',
   timers: 'Countdown Timers',
   todo: 'To-do Checklist',
 };

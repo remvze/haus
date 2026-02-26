@@ -1,0 +1,112 @@
+.wrapper {
+  padding: 12px;
+}
+
+.title {
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.channelList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.channelButton {
+  padding: 8px 12px;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-foreground-subtle);
+  cursor: pointer;
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-200);
+  transition: 0.2s;
+
+  &:hover {
+    color: var(--color-foreground);
+    background: var(--color-neutral-200);
+  }
+}
+
+.active {
+  color: var(--color-neutral-50);
+  background: var(--color-neutral-950);
+  border-color: var(--color-neutral-950);
+
+  &:hover {
+    color: var(--color-neutral-50);
+    background: var(--color-neutral-950);
+  }
+}
+
+.player {
+  padding: 16px;
+  border: 1px dashed var(--color-neutral-300);
+}
+
+.info {
+  display: flex;
+  gap: 16px;
+
+  & .side {
+    flex-grow: 1;
+  }
+
+  & h2 {
+    font-size: var(--font-sm);
+    font-weight: 500;
+  }
+
+  & .description {
+    margin-top: 4px;
+    font-size: var(--font-xsm);
+    color: var(--color-foreground-subtle);
+  }
+}
+
+.cover {
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+  border: 1px solid var(--color-neutral-200);
+  object-fit: cover;
+}
+
+.nowPlaying {
+  margin-top: 8px;
+  font-weight: bold;
+  color: #fc0;
+}
+
+.controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.playButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: var(--font-lg);
+  color: var(--color-neutral-50);
+  cursor: pointer;
+  background: var(--color-neutral-950);
+  border: none;
+  border-radius: 50%;
+}
+
+.playButton:hover {
+  background: var(--color-neutral-800);
+}
+
+.volume {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+}
