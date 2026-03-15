@@ -5,24 +5,15 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useSoundEffect } from '@/hooks/use-sound-effect';
 import { Modal } from '@/components/modal';
 import { Window } from '@/components/window';
+import { useWindowState } from '@/contexts/window-state';
 
 import styles from './pomodoro.module.css';
 import { cn } from '@/helpers/styles';
 import { useSettings } from '@/stores/settings';
 
-interface PomodoroProps {
-  isMinimized: boolean;
-  isOpen: boolean;
-  onClose: () => void;
-  onMinimize: () => void;
-}
+export function Pomodoro() {
+  const { isOpen, isMinimized, onClose, onMinimize } = useWindowState('pomodoro');
 
-export function Pomodoro({
-  isMinimized,
-  isOpen,
-  onClose,
-  onMinimize,
-}: PomodoroProps) {
   return (
     <Window
       contained

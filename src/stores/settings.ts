@@ -1,18 +1,33 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export type BackgroundPattern = 'dots' | 'grid' | 'none';
+export type PatternId =
+  | 'fire'
+  | 'rain'
+  | 'bonsai'
+  | 'snow'
+  | 'waves'
+  | 'aurora'
+  | 'weather';
+
+export interface Location {
+  lat: number;
+  lng: number;
+  name: string;
+}
 
 interface State {
   alarmVolume: number;
   backgroundOpacity: number;
-  backgroundPattern: BackgroundPattern;
+  backgroundPattern: PatternId;
+  location: Location | null;
 }
 
 interface Actions {
   setAlarmVolume: (volume: number) => void;
   setBackgroundOpacity: (opacity: number) => void;
-  setBackgroundPattern: (pattern: BackgroundPattern) => void;
+  setBackgroundPattern: (pattern: PatternId) => void;
+  setLocation: (location: Location | null) => void;
 }
 
 export const useSettings = create<State & Actions>()(
@@ -20,7 +35,8 @@ export const useSettings = create<State & Actions>()(
     set => ({
       alarmVolume: 0.5,
       backgroundOpacity: 1,
-      backgroundPattern: 'dots',
+      backgroundPattern: 'fire',
+      location: null,
 
       setAlarmVolume(volume) {
         set({ alarmVolume: volume });
@@ -33,6 +49,10 @@ export const useSettings = create<State & Actions>()(
       setBackgroundPattern(pattern) {
         set({ backgroundPattern: pattern });
       },
+
+      setLocation(location) {
+        set({ location });
+      },
     }),
     {
       migrate: (persisted, version) => {
@@ -40,7 +60,8 @@ export const useSettings = create<State & Actions>()(
           return {
             ...(persisted as State),
             backgroundOpacity: 1,
-            backgroundPattern: 'dots' as BackgroundPattern,
+            backgroundPattern: 'fire' as PatternId,
+            location: null,
           };
         }
 
@@ -51,6 +72,7 @@ export const useSettings = create<State & Actions>()(
         alarmVolume: state.alarmVolume,
         backgroundOpacity: state.backgroundOpacity,
         backgroundPattern: state.backgroundPattern,
+        location: state.location,
       }),
       skipHydration: true,
       storage: createJSONStorage(() => localStorage),
