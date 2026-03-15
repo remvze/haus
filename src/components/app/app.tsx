@@ -24,6 +24,7 @@ import { Pomodoro } from '../tools/pomodoro';
 import { Timers } from '../tools/timers';
 import { Todo } from '../tools/todo';
 import styles from './app.module.css';
+import { SomaFM } from '../tools/somafm';
 
 const createPattern = (id: PatternId, location: Location | null): AsciiPattern => {
   switch (id) {
@@ -65,6 +66,13 @@ function AppContent() {
       <Timers />
 
       <Lofi />
+      
+      <SomaFM
+        isMinimized={isAppMinimized('somafm')}
+        isOpen={isAppOpen('somafm')}
+        onClose={() => closeApp('somafm')}
+        onMinimize={() => minimizeApp('somafm')}
+      />
 
       <Settings />
     </div>
