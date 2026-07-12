@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BiPause, BiPlay } from 'react-icons/bi';
 
 import { Window } from '@/components/window';
+import { useWindowState } from '@/contexts/window-state';
 
 import styles from './somafm.module.css';
 
@@ -19,19 +20,8 @@ interface Channel {
   title: string;
 }
 
-interface SomaFMProps {
-  isMinimized: boolean;
-  isOpen: boolean;
-  onClose: () => void;
-  onMinimize: () => void;
-}
-
-export function SomaFM({
-  isMinimized,
-  isOpen,
-  onClose,
-  onMinimize,
-}: SomaFMProps) {
+export function SomaFM() {
+  const { isMinimized, isOpen, onClose, onMinimize } = useWindowState('somafm');
   return (
     <Window
       contained

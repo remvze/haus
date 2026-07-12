@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type PatternId =
+  | 'dots'
+  | 'grid'
+  | 'none'
   | 'fire'
   | 'rain'
   | 'bonsai'
@@ -35,7 +38,7 @@ export const useSettings = create<State & Actions>()(
     set => ({
       alarmVolume: 0.5,
       backgroundOpacity: 1,
-      backgroundPattern: 'fire',
+      backgroundPattern: 'dots',
       location: null,
 
       setAlarmVolume(volume) {
@@ -60,7 +63,7 @@ export const useSettings = create<State & Actions>()(
           return {
             ...(persisted as State),
             backgroundOpacity: 1,
-            backgroundPattern: 'fire' as PatternId,
+            backgroundPattern: 'dots' as PatternId,
             location: null,
           };
         }

@@ -13,6 +13,7 @@ import { WeatherPattern } from '@/lib/ascii/patterns/weather/weather-pattern';
 import { useSettings } from '@/stores/settings';
 import type { PatternId, Location } from '@/stores/settings';
 import { AsciiBackground } from '../ascii-background/ascii-background';
+import { Background } from '../background';
 import { Settings } from '../settings';
 import { StoreConsumer } from '../store-consumer';
 import { Toolbox } from '../toolbox';
@@ -26,16 +27,27 @@ import { Todo } from '../tools/todo';
 import styles from './app.module.css';
 import { SomaFM } from '../tools/somafm';
 
-const createPattern = (id: PatternId, location: Location | null): AsciiPattern => {
+const createPattern = (
+  id: PatternId,
+  location: Location | null,
+): AsciiPattern | null => {
   switch (id) {
-    case 'fire': return new FirePattern({});
-    case 'rain': return new RainPattern();
-    case 'bonsai': return new BonsaiPattern({});
-    case 'snow': return new SnowPattern({});
-    case 'waves': return new WavePattern({});
-    case 'aurora': return new AuroraPattern({});
-    case 'weather': return new WeatherPattern(location);
-    default: return new FirePattern({});
+    case 'fire':
+      return new FirePattern({});
+    case 'rain':
+      return new RainPattern();
+    case 'bonsai':
+      return new BonsaiPattern({});
+    case 'snow':
+      return new SnowPattern({});
+    case 'waves':
+      return new WavePattern({});
+    case 'aurora':
+      return new AuroraPattern({});
+    case 'weather':
+      return new WeatherPattern(location);
+    default:
+      return null;
   }
 };
 
@@ -50,7 +62,7 @@ function AppContent() {
 
   return (
     <div className={styles.app}>
-      <AsciiBackground pattern={pattern} />
+      {pattern ? <AsciiBackground pattern={pattern} /> : <Background />}
       <Toolbox />
 
       <Notepad />
@@ -66,13 +78,8 @@ function AppContent() {
       <Timers />
 
       <Lofi />
-      
-      <SomaFM
-        isMinimized={isAppMinimized('somafm')}
-        isOpen={isAppOpen('somafm')}
-        onClose={() => closeApp('somafm')}
-        onMinimize={() => minimizeApp('somafm')}
-      />
+
+      <SomaFM />
 
       <Settings />
     </div>

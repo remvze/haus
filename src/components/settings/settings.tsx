@@ -2,13 +2,15 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { IoSettingsSharp } from 'react-icons/io5';
 
-import { type PatternId, useSettings } from '@/stores/settings';
-import type { Location } from '@/stores/settings';
+import { type PatternId, useSettings, Location } from '@/stores/settings';
 import { Portal } from '@/components/portal';
 
 import styles from './settings.module.css';
 
 const PATTERN_OPTIONS: Array<{ label: string; value: PatternId }> = [
+  { label: 'Dots', value: 'dots' },
+  { label: 'Grid', value: 'grid' },
+  { label: 'None', value: 'none' },
   { label: 'Fire', value: 'fire' },
   { label: 'Rain', value: 'rain' },
   { label: 'Bonsai', value: 'bonsai' },
@@ -116,8 +118,8 @@ export const Settings = () => {
   return (
     <Portal>
       <button
-        ref={triggerRef}
         className={styles.trigger}
+        ref={triggerRef}
         onClick={() => setIsOpen(prev => !prev)}
       >
         <IoSettingsSharp size={18} />
@@ -126,11 +128,11 @@ export const Settings = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            ref={panelRef}
             animate={{ opacity: 1, y: 0 }}
             className={styles.panel}
             exit={{ opacity: 0, y: 8 }}
             initial={{ opacity: 0, y: 8 }}
+            ref={panelRef}
             transition={{ duration: 0.15 }}
           >
             <h3 className={styles.title}>Settings</h3>
