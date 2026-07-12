@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { IoSettingsSharp } from 'react-icons/io5';
 
-import { type PatternId, useSettings, Location } from '@/stores/settings';
+import { type Location, type PatternId, useSettings } from '@/stores/settings';
 import { Portal } from '@/components/portal';
 
 import styles from './settings.module.css';
