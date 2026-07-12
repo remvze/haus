@@ -1,15 +1,13 @@
 import { Window } from '@/components/window';
+import { useWindowState } from '@/contexts/window-state';
 import { Form } from './form';
 import { Todos } from './todos';
 
 import styles from './todo.module.css';
 
-interface TodoProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+export function Todo() {
+  const { isOpen, onClose } = useWindowState('todo');
 
-export function Todo({ isOpen, onClose }: TodoProps) {
   return (
     <Window
       contained
