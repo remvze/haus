@@ -5,6 +5,9 @@
   padding: 0;
   margin: 0;
   font: inherit;
+  scrollbar-color: var(--color-neutral-300) var(--color-neutral-100);
+  scrollbar-width: thin;
+  color-scheme: dark;
 }
 
 html {
